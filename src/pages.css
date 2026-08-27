@@ -1,11 +1,3 @@
-/* ============================================================
-   MAKRAN BLUE — extended page styles
-   Complements index.css. Every rule uses the theme
-   variables, so it automatically follows the theme changer
-   (deep ocean / beach light) and the RTL layout.
-   ============================================================ */
-
-
 /* ---------- shared helpers ---------- */
 
 .page.center {
@@ -3415,12 +3407,13 @@
   margin-bottom: 8px;
 }
 
-/* area detail: map column */
 .two-col .coastal-map {
   align-self: start;
 }
 
-/* ---------- rich footer ---------- */
+/* =========================
+   RESPONSIVE FOOTER
+========================= */
 
 .site-footer.footer-rich {
   align-items: flex-start;
@@ -3436,7 +3429,6 @@
 .footer-cols {
   display: flex;
   gap: 48px;
-  /* flex-wrap: wrap; */
   margin-inline-start: auto;
 }
 
@@ -3466,28 +3458,87 @@
 }
 
 .footer-copy {
-  /* width: 100%; */
-  /* margin-top: 50px;
-  padding-top: 14px; */
   border-top: 1px solid var(--line);
   font-size: 0.8rem;
 }
 
-@media (max-width: 980px) {
+
+/* TABLET */
+@media (max-width: 900px) {
   .site-footer.footer-rich {
-    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 28px;
+  }
+
+  .footer-brand-col {
+    width: 100%;
   }
 
   .footer-cols {
     margin-inline-start: 0;
-    gap: 28px;
+    gap: 35px;
   }
 }
 
 
-/* ============================================================
-   PRO NAVBAR + MAP TOOLS (v3)
-   ============================================================ */
+/* MOBILE */
+@media (max-width: 600px) {
+  .site-footer.footer-rich {
+    flex-direction: column;
+    gap: 25px;
+    padding: 30px 20px;
+  }
+
+  .footer-brand-col {
+    width: 100%;
+  }
+
+  .footer-brand-col p {
+    max-width: 100%;
+    font-size: 0.85rem;
+  }
+
+  .footer-cols {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px 20px;
+    margin: 0;
+  }
+
+  .footer-col {
+    min-width: 0;
+    gap: 7px;
+  }
+
+  .footer-col h4 {
+    font-size: 0.9rem;
+  }
+
+  .footer-col a {
+    font-size: 0.85rem;
+  }
+
+  .footer-copy {
+    width: 100%;
+    padding-top: 15px;
+    text-align: center;
+  }
+}
+
+
+/* SMALL MOBILE */
+@media (max-width: 380px) {
+  .footer-cols {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .site-footer.footer-rich {
+    padding: 25px 15px;
+  }
+}
+
 
 /* ---------- header shell ---------- */
 

@@ -1,9 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { useApp } from "../context/AppContext";
-
-
 const COASTAL_AREAS = [
   {
     name: "Gwadar",
@@ -14,7 +11,7 @@ const COASTAL_AREAS = [
   {
     name: "Pasni",
     lat: 25.2631,
-    lon: 63.4710,
+    lon: 63.471,
     description: "Pasni Coast • Arabian Sea",
   },
   {
@@ -32,13 +29,13 @@ const COASTAL_AREAS = [
   {
     name: "Pishukan",
     lat: 25.0833,
-    lon: 62.0000,
+    lon: 62.0,
     description: "Pishukan Coast • Arabian Sea",
   },
   {
     name: "Astola Island",
-    lat: 25.1210,
-    lon: 63.8500,
+    lat: 25.121,
+    lon: 63.85,
     description: "Astola Island • Arabian Sea",
   },
 ];
@@ -88,7 +85,9 @@ function MarineWeather() {
   const current = data?.current;
 
   const getDirection = (degree) => {
-    if (degree === null || degree === undefined) return "--";
+    if (degree === null || degree === undefined) {
+      return "--";
+    }
 
     const directions = [
       "N",
@@ -107,13 +106,17 @@ function MarineWeather() {
   };
 
   const formatNumber = (value, decimals = 1) => {
-    if (value === null || value === undefined) return "--";
+    if (value === null || value === undefined) {
+      return "--";
+    }
 
     return Number(value).toFixed(decimals);
   };
 
   const forecast = useMemo(() => {
-    if (!data?.hourly?.time) return [];
+    if (!data?.hourly?.time) {
+      return [];
+    }
 
     const h = data.hourly;
 
@@ -136,7 +139,9 @@ function MarineWeather() {
     return Array.from({ length: 12 }, (_, i) => {
       const index = closestIndex + i;
 
-      if (!h.time[index]) return null;
+      if (!h.time[index]) {
+        return null;
+      }
 
       return {
         time: h.time[index],
@@ -147,6 +152,10 @@ function MarineWeather() {
     }).filter(Boolean);
   }, [data]);
 
+  /* =========================
+     LOADING
+  ========================= */
+
   if (loading) {
     return (
       <div className="marine-dashboard">
@@ -156,13 +165,19 @@ function MarineWeather() {
           </div>
 
           <h2>Reading the Arabian Sea...</h2>
+
           <p>
-            Loading live marine conditions for {selectedArea.name}.
+            Loading live marine conditions for{" "}
+            {selectedArea.name}.
           </p>
         </div>
       </div>
     );
   }
+
+  /* =========================
+     ERROR
+  ========================= */
 
   if (error) {
     return (
@@ -182,17 +197,20 @@ function MarineWeather() {
     );
   }
 
+  /* =========================
+     MAIN PAGE
+  ========================= */
+
   return (
     <div className="marine-dashboard">
 
+      {/* BACK BUTTON */}
       <Link className="tool-back" to="/fisherman">
-        ← {t("ctaFisherman")}
+        ← Fisherman
       </Link>
 
       {/* HEADER */}
-
       <section className="marine-header">
-
         <div>
           <span className="marine-label">
             MAKRAN BLUE • MARINE INTELLIGENCE
@@ -215,14 +233,10 @@ function MarineWeather() {
         >
           ↻ Refresh
         </button>
-
       </section>
 
-
       {/* LOCATION SELECTOR */}
-
       <section className="location-panel">
-
         <div className="location-title">
           <span className="location-pin">📍</span>
 
@@ -242,7 +256,9 @@ function MarineWeather() {
               (item) => item.name === e.target.value
             );
 
-            setSelectedArea(area);
+            if (area) {
+              setSelectedArea(area);
+            }
           }}
         >
           {COASTAL_AREAS.map((area) => (
@@ -251,14 +267,10 @@ function MarineWeather() {
             </option>
           ))}
         </select>
-
       </section>
 
-
       {/* LIVE STATUS */}
-
       <div className="live-status">
-
         <span className="live-dot"></span>
 
         LIVE MARINE DATA
@@ -266,23 +278,17 @@ function MarineWeather() {
         <span className="status-separator">•</span>
 
         {data?.timezone || "Local Time"}
-
       </div>
 
-
       {/* MAIN WAVE CARD */}
-
       <section className="main-wave-card">
-
         <div className="wave-background">
           <div className="wave wave-one"></div>
           <div className="wave wave-two"></div>
         </div>
 
         <div className="wave-content">
-
           <div className="wave-heading">
-
             <div>
               <span>WAVE HEIGHT</span>
 
@@ -295,11 +301,11 @@ function MarineWeather() {
             <div className="wave-icon">
               🌊
             </div>
-
           </div>
 
           <div className="wave-details">
 
+            {/* DIRECTION */}
             <div>
               <span>Direction</span>
 
@@ -312,6 +318,7 @@ function MarineWeather() {
               </small>
             </div>
 
+            {/* PERIOD */}
             <div>
               <span>Period</span>
 
@@ -322,55 +329,60 @@ function MarineWeather() {
               <small>sec</small>
             </div>
 
+            {/* SWELL */}
             <div>
               <span>Swell</span>
 
               <strong>
-                {formatNumber(current?.swell_wave_height)}
+                {formatNumber(
+                  current?.swell_wave_height
+                )}
               </strong>
 
               <small>m</small>
             </div>
 
           </div>
-
         </div>
-
       </section>
 
-
       {/* DATA CARDS */}
-
       <section className="marine-grid">
 
+        {/* WAVE DIRECTION */}
         <div className="marine-stat">
-
           <div className="stat-icon">🧭</div>
 
           <div>
             <span>WAVE DIRECTION</span>
 
             <strong>
-              {formatNumber(current?.wave_direction, 0)}°
+              {formatNumber(
+                current?.wave_direction,
+                0
+              )}
+              °
             </strong>
 
             <small>
-              {getDirection(current?.wave_direction)}
+              {getDirection(
+                current?.wave_direction
+              )}
             </small>
           </div>
-
         </div>
 
-
+        {/* WAVE PERIOD */}
         <div className="marine-stat">
-
           <div className="stat-icon">⏱</div>
 
           <div>
             <span>WAVE PERIOD</span>
 
             <strong>
-              {formatNumber(current?.wave_period)}
+              {formatNumber(
+                current?.wave_period
+              )}
               <small> s</small>
             </strong>
 
@@ -378,13 +390,13 @@ function MarineWeather() {
               Average period
             </small>
           </div>
-
         </div>
 
-
+        {/* SEA TEMPERATURE */}
         <div className="marine-stat">
-
-          <div className="stat-icon">🌡️</div>
+          <div className="stat-icon">
+            🌡️
+          </div>
 
           <div>
             <span>SEA TEMPERATURE</span>
@@ -400,13 +412,13 @@ function MarineWeather() {
               Surface water
             </small>
           </div>
-
         </div>
 
-
+        {/* OCEAN CURRENT */}
         <div className="marine-stat">
-
-          <div className="stat-icon">💨</div>
+          <div className="stat-icon">
+            💨
+          </div>
 
           <div>
             <span>OCEAN CURRENT</span>
@@ -424,34 +436,28 @@ function MarineWeather() {
               )}
             </small>
           </div>
-
         </div>
 
       </section>
 
-
       {/* FORECAST */}
-
       <section className="forecast-section">
 
         <div className="section-heading">
-
           <div>
             <span>SHORT RANGE</span>
+
             <h2>Next 12 Hours</h2>
           </div>
 
           <p>
             Hourly wave forecast
           </p>
-
         </div>
-
 
         <div className="forecast-scroll">
 
           {forecast.map((item, index) => {
-
             const time = new Date(item.time);
 
             return (
@@ -481,8 +487,7 @@ function MarineWeather() {
                 </strong>
 
                 <span className="forecast-direction">
-                  {getDirection(item.direction)}
-                  {" "}
+                  {getDirection(item.direction)}{" "}
                   {formatNumber(item.direction, 0)}°
                 </span>
 
@@ -495,19 +500,18 @@ function MarineWeather() {
           })}
 
         </div>
-
       </section>
 
-
       {/* LOCATION INFO */}
-
       <section className="coordinates-card">
 
         <div>
           <span>📍</span>
 
           <div>
-            <small>SEA GRID LOCATION</small>
+            <small>
+              SEA GRID LOCATION
+            </small>
 
             <strong>
               {selectedArea.lat.toFixed(4)}° N
@@ -519,12 +523,15 @@ function MarineWeather() {
           </div>
         </div>
 
-
         <div className="data-provider">
 
-          <small>DATA PROVIDER</small>
+          <small>
+            DATA PROVIDER
+          </small>
 
-          <strong>Open-Meteo Marine</strong>
+          <strong>
+            Open-Meteo Marine
+          </strong>
 
           <span>
             Marine forecast model
@@ -534,28 +541,29 @@ function MarineWeather() {
 
       </section>
 
-
       {/* WARNING */}
-
       <div className="marine-notice">
 
         <span>⚠️</span>
 
         <div>
-          <strong>Important navigation notice</strong>
+          <strong>
+            Important navigation notice
+          </strong>
 
           <p>
-            Marine forecasts are model-based information.
-            Coastal conditions can change quickly. Do not use
-            this dashboard as a replacement for official
-            navigation warnings, nautical charts, or emergency
+            Marine forecasts are model-based
+            information. Coastal conditions can
+            change quickly. Do not use this dashboard
+            as a replacement for official navigation
+            warnings, nautical charts, or emergency
             services.
           </p>
         </div>
 
       </div>
 
-
+      {/* FOOTER */}
       <footer className="marine-footer">
 
         Makran Blue Marine Intelligence
