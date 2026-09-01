@@ -1,100 +1,50 @@
-# Makran Blue
+# Makran Blue — v3 (History • People • Places • Astola + full i18n)
 
-A coastal knowledge platform for the Makran coast of Balochistan —
-ocean theme, **theme changer** (deep ocean / beach light) and
-**language changer** (English / اردو / بلوچی, full RTL support),
-wired through a single `AppContext`.
+Merged build: original coastal platform + the new History / Hall of Voices /
+coast destinations files, one design system, **EN / اردو / بلوچی everywhere**.
 
-## Run it
+## What was merged and how
 
-```bash
-npm install
-npm run dev     # http://localhost:5173
-npm run build   # production build
-```
+| New file you sent | Where it landed | Notes |
+|---|---|---|
+| New `Layout` (mega menu) | `src/components/Layout.jsx` | Fixed a bug: template strings were written as `className={main-nav ${open…}}` without backticks (crashed). Rebuilt with the v2 rich footer + translated nav labels, Coast mega-menu, People/History/Astola links |
+| `extraPlaces.js` | `src/data/extraPlaces.js` | Cleaned, typos fixed (e.g. `منیر`), kept your `L(en,ur,bal)` inline style |
+| `people.js` | `src/data/people.js` | 8 voices of Makran, expanded bodies (researched: Qazi 1955–2023, Hashmi 1926–1978, Nearchus/Arrian, etc.) |
+| `places.js` | `src/data/places.js` | 15 core places + extraPlaces; **hotel phone numbers added** (PC Gwadar (086) 4212223, Sadaf (086) 4210967, Royal 0333 2008766) |
 
-## Project structure
+## New pages (all translated ×3)
 
-```
-index.html                     fonts, favicon, early theme/lang restore (mb-theme / mb-lang)
-src/
-  main.jsx                     imports index.css → App.css → pages.css
-  App.jsx                      AppProvider + routes
-  AppContext.jsx (in context/) theme + language context (yours, unchanged)
-  i18n.js                      dictionaries en/ur/bal + rtlLangs (unchanged)
-  data.js                      areas / fish / coastalLocations with i18n keys (unchanged)
-  index.css                    ocean theme (unchanged)
-  App.css                      (unchanged)
-  pages.css                    all page-specific styles (compass, safety, marine
-                               weather, fishing dashboard, AI lab, chat, contact,
-                               fisherman mode, footer, …) — built on the
-                               index.css variables, so theme + RTL apply everywhere
-  context/AppContext.jsx       useApp() → { theme, toggleTheme, lang, setLang, t, rtl }
-  components/
-    Layout.jsx                 header (nav + language pill + theme toggle),
-                               ocean background, rich footer, mobile menu
-    CoastalMap.jsx             i18n map placeholder (focus-aware)
-    LiveMap.jsx                ready-made Leaflet/OSM live map (swap-in ready)
-    AreaCard, Feature, Info, Tool, CultureCard
-  pages/
-    Home, Explore, Areas, AreaDetails,
-    MarineLife, FishDetails, Culture, NotFound   (your v2 files)
-    Safety, Fisherman, Compass, Weather,
-    FishingGuide, FishIdentifier, Emergency, AI,
-    About, Contact, ToolPage                  (your tool pages)
-public/images/                 placeholder JPEGs for area/fish cards
-```
+- `/history` — Gedrosia → Alexander/Nearchus (325 BCE) → Omani Gwadar (1783–1958) → Hinglaj/Khizr/Astola faiths → 2002 port & highway, plus the **N-10 route strip** (19 stops)
+- `/people` + `/people/:slug` — **Hall of Voices**: filter by Music/Poetry/Language/Folklore; profiles with quote, years, place, works list
+- `/astola` — Pakistan's first Marine Protected Area: MPA 2017, 39 km from Pasni, 800+ turtle nests (2021), ~25 corals, endemic Astola viper, Kali temple ("Satadweep"), visiting window Oct–Apr
+- `/destinations` `/beaches` `/picnic` `/hills` `/hotels` `/stays` — category grids → `/place/:slug` detail pages with map link, **tel: call button**, nearby places, verify-locally disclaimer
 
-## Theme + language on every page
+## Real photographs
 
-Every page renders inside `<Layout>` under `<AppProvider>`, so:
+29 real photos in `public/images/` — people **individually verified by eye**
+(Noor Khan Bizenjo, Arif Baloch, Mubarak Qazi, Syed Zahoor Shah Hashmi) and
+places from Wikimedia/news/travel sources (Astola cliffs, Kund Malir,
+Princess of Hope, Sphinx, Koh-e-Batil, PC Gwadar, Pasni harbour, Ormara,
+Jiwani, Hingol mud volcanoes, Golden/West Bay + 6 fish species).
+Two placeholder portraits (Momin, Noor Bakhsh, Atta Shad, Punnu) use the
+🎙️ fallback card until rights-cleared photos are available. Replace any
+image file to update the site — filenames are the contract.
 
-- **Theme** — `AppContext` sets `data-theme` on `<html>`; all CSS in
-  `index.css` + `pages.css` is variable-driven, so the whole site
-  (including every tool page) switches instantly and persists in
-  `localStorage` as `mb-theme`.
-- **Language** — `t()` comes from the same context; switching sets
-  `lang`, `dir` and the `.rtl` class on `<html>` (Nastaliq fonts for
-  ur/bal) and persists as `mb-lang`. Tool pages without dictionary
-  keys fall back to English automatically; add strings to
-  `src/i18n.js` whenever you want them translated.
+## Language system (unchanged core, expanded)
 
-## Routes
+- **811 keys × 3 languages** in `src/i18n/translations.js` — every nav item,
+  footer column, page, status, place intro and fact is translated
+- `useApp()` gives `t`, `lang`, `setLang`, `dir`, `theme`, `toggleTheme`
+- Selecting اردو/بلوچی sets `<html dir="rtl">` + `.rtl` class → **Nastaliq
+  font loads and the whole layout flips**; EN restores LTR
+- Data files use the inline `L(en, ur, bal)` style; pages read them with
+  `loc(obj, lang)` — both systems active side by side
+- Choice + theme persist in localStorage
 
-```
-/                       Home
-/explore                Explore (map + coastal areas)
-/areas, /areas/:slug    Coastal areas + area detail
-/marine-life, /:id      Marine life + species profile
-/culture                Coastal culture
-/safety                 Live coastal safety monitor (Open-Meteo)
-/fisherman              Fisherman mode hub
-/fisherman/compass      Device compass + GPS
-/fisherman/weather      Live marine conditions (Open-Meteo)
-/fisherman/fishing-guide     Fishing intelligence dashboard
-/fisherman/fish-identifier    MobileNet AI specimen lab
-/fisherman/emergency    (renders Safety)
-/ai, /about, /contact
-*                       404
-```
+## Keep from your project
 
-## Small fixes made while merging
+`index.css` = your theme file (now in repo), `App.css` = your content CSS +
+mega-menu and new-page styles. Leaflet added for the live map
+(`npm install` covers it).
 
-- `MarineLife.jsx`: `to={/marine-life/${f.id}}` → `` to={`/marine-life/${f.id}`} ``
-  (missing quotes in the paste — it wouldn't compile otherwise).
-- `Home.jsx`: the three placeholder `to="/explore"` links point to their
-  real destinations now — Fisherman Mode → `/fisherman`, Stay aware →
-  `/safety`, Open AI Guide → `/ai`.
-- `FishDetails.jsx`: "Try identifier" → `/fisherman/fish-identifier`.
-- `CoastalMap.jsx` now uses `t()` so the placeholder (incl. the
-  focus view on area pages) is translated too.
-- `data.js` lives at `src/data.js` so your `import { areas } from "../data"` works.
-
-## Notes
-
-- Live data (Open-Meteo, OSM tiles, Google Fonts, MobileNet weights)
-  needs internet. Offline/sandboxed previews show the built-in
-  loading/error states and recover with a Retry.
-- `LiveMap.jsx` (Leaflet) is available if you ever want to replace the
-  `CoastalMap` placeholder with the real map — it already uses the
-  `.map-container` / `.map-info-panel` styles in `index.css`.
+Run: `npm install && npm run dev`

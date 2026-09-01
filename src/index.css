@@ -811,6 +811,10 @@ p {
   padding: 14px;
 }
 
+.info-card span {
+  font-size: 1.6rem;
+}
+
 .text-link {
   color: var(--accent);
   font-weight: 700;

@@ -45,31 +45,22 @@ function CoastalMap({ focus, compact }) {
 
     L.control.zoom({ position: "bottomright" }).addTo(map);
 
-    L.tileLayer(
-      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      {
-        maxZoom: 18,
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }
-    ).addTo(map);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 18,
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
 
-    // Declare every beach, fishing area and coastal town
     coastalLocations.forEach((loc) => {
-      const marker = L.circleMarker(
-        [loc.lat, loc.lng],
-        {
-          radius: 9,
-          color: "rgba(2, 16, 24, 0.85)",
-          weight: 1.5,
-          fillColor: COLORS[loc.type] || "#3ec7d8",
-          fillOpacity: 0.9,
-        }
-      ).addTo(map);
+      const marker = L.circleMarker([loc.lat, loc.lng], {
+        radius: 9,
+        color: "rgba(2, 16, 24, 0.85)",
+        weight: 1.5,
+        fillColor: COLORS[loc.type] || "#3ec7d8",
+        fillOpacity: 0.9,
+      }).addTo(map);
 
-      marker.on("click", () =>
-        setInfo({ kind: "loc", loc })
-      );
+      marker.on("click", () => setInfo({ kind: "loc", loc }));
     });
 
     mapRef.current = map;
@@ -90,9 +81,7 @@ function CoastalMap({ focus, compact }) {
     const map = mapRef.current;
     if (!map || !focusLoc) return;
 
-    map.flyTo([focusLoc.lat, focusLoc.lng], 10, {
-      duration: 0.8,
-    });
+    map.flyTo([focusLoc.lat, focusLoc.lng], 10, { duration: 0.8 });
     setInfo({ kind: "loc", loc: focusLoc });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focus?.slug]);
@@ -100,7 +89,7 @@ function CoastalMap({ focus, compact }) {
   /* ---------------- FIND MY LOCATION ---------------- */
   const locate = () => {
     if (!navigator.geolocation) {
-      setSearchMsg("GPS is not available in this browser.");
+      setSearchMsg(t("mapGpsNA"));
       return;
     }
 
@@ -109,10 +98,7 @@ function CoastalMap({ focus, compact }) {
         const map = mapRef.current;
         if (!map) return;
 
-        const ll = [
-          pos.coords.latitude,
-          pos.coords.longitude,
-        ];
+        const ll = [pos.coords.latitude, pos.coords.longitude];
 
         map.flyTo(ll, 12, { duration: 1 });
 
@@ -131,7 +117,7 @@ function CoastalMap({ focus, compact }) {
         setInfo({ kind: "you" });
       },
       () => {
-        setSearchMsg("Could not get your location.");
+        setSearchMsg(t("mapLocFail"));
       }
     );
   };
@@ -147,7 +133,6 @@ function CoastalMap({ focus, compact }) {
     setSearchMsg("");
 
     try {
-      // Bias the search towards the region
       const q2 = /pakistan/i.test(q) ? q : `${q}, Pakistan`;
 
       const url =
@@ -168,7 +153,7 @@ function CoastalMap({ focus, compact }) {
       const r = data[0];
 
       if (!r) {
-        setSearchMsg("No place matched — try a nearby town name.");
+        setSearchMsg(t("mapNoMatch"));
         return;
       }
 
@@ -197,7 +182,7 @@ function CoastalMap({ focus, compact }) {
       });
     } catch (err) {
       console.error(err);
-      setSearchMsg("Search service is unavailable right now.");
+      setSearchMsg(t("mapSearchFail"));
     } finally {
       setSearching(false);
     }
@@ -240,12 +225,8 @@ function CoastalMap({ focus, compact }) {
     panel = { title, cat, desc, lat, lon };
   }
 
-  const beachCount = coastalLocations.filter(
-    (l) => l.type === "beach"
-  ).length;
-  const fishCount = coastalLocations.filter(
-    (l) => l.type === "fishing"
-  ).length;
+  const beachCount = coastalLocations.filter((l) => l.type === "beach").length;
+  const fishCount = coastalLocations.filter((l) => l.type === "fishing").length;
 
   return (
     <div className="coastal-map-wrapper">
@@ -290,33 +271,23 @@ function CoastalMap({ focus, compact }) {
       <div className="coastal-map live-map">
         <div className="map-container" ref={containerRef} />
 
-        <button
-          className="map-location-btn"
-          onClick={locate}
-          title={t("findMe")}
-        >
+        <button className="map-location-btn" onClick={locate} title={t("findMe")}>
           📍
         </button>
 
-        {searchMsg && (
-          <div className="map-search-msg">
-            {searchMsg}
-          </div>
-        )}
+        {searchMsg && <div className="map-search-msg">{searchMsg}</div>}
 
         {panel && (
           <div className="map-info-panel">
             <button
               className="map-close"
               onClick={() => setInfo(null)}
-              aria-label="Close"
+              aria-label={t("mapClose")}
             >
               ×
             </button>
 
-            {panel.cat && (
-              <span className="eyebrow">{panel.cat}</span>
-            )}
+            {panel.cat && <span className="eyebrow">{panel.cat}</span>}
 
             <h3>{panel.title}</h3>
             {panel.desc && <p>{panel.desc}</p>}
@@ -324,9 +295,7 @@ function CoastalMap({ focus, compact }) {
             {panel.lat !== null && (
               <button
                 className="popup-direction-btn"
-                onClick={() =>
-                  directions(panel.lat, panel.lon)
-                }
+                onClick={() => directions(panel.lat, panel.lon)}
               >
                 {t("getDir")} →
               </button>

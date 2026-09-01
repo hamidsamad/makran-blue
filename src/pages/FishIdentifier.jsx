@@ -3,12 +3,17 @@ import * as tf from "@tensorflow/tfjs";
 import * as mobilenet from "@tensorflow-models/mobilenet";
 import ToolPage from "./ToolPage";
 
+import { useApp } from "../context/AppContext";
+
 function FishIdentifier() {
+  const { t } = useApp();
+
   const [model, setModel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [imageSrc, setImageSrc] = useState(null);
   const [predictions, setPredictions] = useState([]);
-  const [statusText, setStatusText] = useState("Initializing marine vision system...");
+  /* statusText holds a translation KEY */
+  const [statusText, setStatusText] = useState("fiInit");
   const [dragActive, setDragActive] = useState(false);
   const imageRef = useRef(null);
 
@@ -19,11 +24,11 @@ function FishIdentifier() {
         const loaded = await mobilenet.load({ version: 2, alpha: 1 });
         setModel(loaded);
         setLoading(false);
-        setStatusText("Marine vision system ready.");
+        setStatusText("fiReady");
       } catch (error) {
         console.error(error);
         setLoading(false);
-        setStatusText("Unable to initialize the AI model.");
+        setStatusText("fiFail");
       }
     };
     initAI();
@@ -35,7 +40,7 @@ function FishIdentifier() {
     reader.onload = (e) => {
       setImageSrc(e.target.result);
       setPredictions([]);
-      setStatusText("Specimen loaded. Ready for analysis.");
+      setStatusText("fiLoaded");
     };
     reader.readAsDataURL(file);
   };
@@ -44,15 +49,15 @@ function FishIdentifier() {
     if (!model || !imageRef.current) return;
     setLoading(true);
     setPredictions([]);
-    setStatusText("Scanning specimen visual patterns...");
+    setStatusText("fiScanning");
 
     try {
       const results = await model.classify(imageRef.current);
       setPredictions(results);
-      setStatusText("Analysis complete. Review AI predictions below.");
+      setStatusText("fiDone");
     } catch (error) {
       console.error(error);
-      setStatusText("Analysis failed. Please try another image.");
+      setStatusText("fiError");
     } finally {
       setLoading(false);
     }
@@ -66,9 +71,9 @@ function FishIdentifier() {
 
   return (
     <ToolPage
-      eyebrow="MAKRAN BLUE • AI LAB"
-      title="Fish Identifier"
-      text="Analyze a fish photograph using browser-based computer vision. Results are AI-assisted and should always be verified."
+      eyebrow={t("fiEyebrow")}
+      title={t("toolFishIdentifier")}
+      text={t("fiText")}
     >
       <div className="marine-ai">
         <div className="ocean-orb ocean-orb-one" />
@@ -77,22 +82,33 @@ function FishIdentifier() {
         <div className="ai-system-header">
           <div className="system-title">
             <div className="system-icon">◈</div>
-            <div><span>MARINE VISION SYSTEM</span><h2>AI Specimen Laboratory</h2></div>
+            <div>
+              <span>{t("fiSystem")}</span>
+              <h2>{t("fiLab")}</h2>
+            </div>
           </div>
           <div className="model-status">
-            <span className="model-status-dot" /> MODEL ONLINE
+            <span className="model-status-dot" /> {t("fiModelOnline")}
           </div>
         </div>
 
         <div className="ai-status-bar">
-          <div className="status-wave"><span /><span /><span /><span /></div>
-          <div><small>SYSTEM STATUS</small><strong>{statusText}</strong></div>
+          <div className="status-wave">
+            <span /><span /><span /><span />
+          </div>
+          <div>
+            <small>{t("fiSysStatus")}</small>
+            <strong>{t(statusText)}</strong>
+          </div>
         </div>
 
         {!imageSrc ? (
           <div
             className={`specimen-dropzone ${dragActive ? "drag-active" : ""}`}
-            onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragActive(true);
+            }}
             onDragLeave={() => setDragActive(false)}
             onDrop={handleDrop}
           >
@@ -104,11 +120,11 @@ function FishIdentifier() {
               <div className="scanner-ring ring-c" />
             </div>
             <div className="drop-content">
-              <span className="drop-eyebrow">SPECIMEN INPUT</span>
-              <h3>Drop your fish image</h3>
-              <p>Upload a clear photograph for AI-assisted marine identification.</p>
+              <span className="drop-eyebrow">{t("fiInput")}</span>
+              <h3>{t("fiDropT")}</h3>
+              <p>{t("fiDropP")}</p>
               <label className="upload-button">
-                <span>＋ Upload Specimen</span>
+                <span>{t("fiUpload")}</span>
                 <input
                   type="file"
                   accept="image/*"
@@ -123,16 +139,21 @@ function FishIdentifier() {
           <div className="specimen-analysis">
             <div className="specimen-preview">
               <div className="preview-header">
-                <div><span>SPECIMEN CAPTURE</span><h3>Visual Input</h3></div>
-                <div className="capture-status">● CAPTURED</div>
+                <div>
+                  <span>{t("fiCapture")}</span>
+                  <h3>{t("fiVisual")}</h3>
+                </div>
+                <div className="capture-status">{t("fiCaptured")}</div>
               </div>
 
               <div className="image-scanner">
                 <img ref={imageRef} src={imageSrc} alt="Fish specimen" />
                 <div className="scan-grid" />
                 <div className="scan-beam" />
-                <div className="corner corner-tl" /><div className="corner corner-tr" />
-                <div className="corner corner-bl" /><div className="corner corner-br" />
+                <div className="corner corner-tl" />
+                <div className="corner corner-tr" />
+                <div className="corner corner-bl" />
+                <div className="corner corner-br" />
               </div>
 
               <button
@@ -140,25 +161,38 @@ function FishIdentifier() {
                 onClick={identifyFish}
                 disabled={loading || !model}
               >
-                {loading ? "ANALYZING SPECIMEN" : "✦ RUN AI ANALYSIS"}
+                {loading ? t("fiAnalyzing") : t("fiRun")}
               </button>
             </div>
 
             <div className="analysis-info">
               <div className="analysis-info-header">
-                <span>NEURAL ANALYSIS</span><strong>v2.0</strong>
+                <span>{t("fiNeural")}</span>
+                <strong>v2.0</strong>
               </div>
               <div className="ai-metrics">
-                <div><span>MODEL</span><strong>MobileNet</strong></div>
-                <div><span>ENGINE</span><strong>TensorFlow.js</strong></div>
-                <div><span>PROCESSING</span><strong>LOCAL</strong></div>
+                <div>
+                  <span>{t("fiModel")}</span>
+                  <strong>MobileNet</strong>
+                </div>
+                <div>
+                  <span>{t("fiEngine")}</span>
+                  <strong>TensorFlow.js</strong>
+                </div>
+                <div>
+                  <span>{t("fiProcessing")}</span>
+                  <strong>{t("fiLocal")}</strong>
+                </div>
               </div>
               <div className="radar-display">
-                <div className="radar-circle"><div className="radar-sweep" /></div>
-                <span className="radar-label">VISUAL SCAN</span>
+                <div className="radar-circle">
+                  <div className="radar-sweep" />
+                </div>
+                <span className="radar-label">{t("fiScan")}</span>
               </div>
               <div className="analysis-note">
-                <span>◎</span><p>Image processing happens directly inside your browser.</p>
+                <span>◎</span>
+                <p>{t("fiPrivacy")}</p>
               </div>
             </div>
           </div>
@@ -167,8 +201,13 @@ function FishIdentifier() {
         {predictions.length > 0 && (
           <section className="ai-results">
             <div className="results-header">
-              <div><span>IDENTIFICATION RESULTS</span><h2>Marine Classification</h2></div>
-              <div className="result-badge">{predictions.length} MATCHES</div>
+              <div>
+                <span>{t("fiResults")}</span>
+                <h2>{t("fiClassH")}</h2>
+              </div>
+              <div className="result-badge">
+                {predictions.length} {t("fiMatches")}
+              </div>
             </div>
 
             <div className="prediction-list">
@@ -177,19 +216,34 @@ function FishIdentifier() {
                 return (
                   <article className="prediction-card" key={i}>
                     <div className="prediction-top">
-                      <div className="prediction-rank">{String(i + 1).padStart(2, "0")}</div>
-                      <div className="prediction-name">
-                        <small>AI CANDIDATE</small>
-                        <h3>{pred.className.split(",")[0].trim().toUpperCase()}</h3>
+                      <div className="prediction-rank">
+                        {String(i + 1).padStart(2, "0")}
                       </div>
-                      <strong className="prediction-percent">{score.toFixed(1)}%</strong>
+                      <div className="prediction-name">
+                        <small>{t("fiCandidate")}</small>
+                        <h3>
+                          {pred.className.split(",")[0].trim().toUpperCase()}
+                        </h3>
+                      </div>
+                      <strong className="prediction-percent">
+                        {score.toFixed(1)}%
+                      </strong>
                     </div>
                     <div className="confidence-track">
-                      <div className="confidence-fill" style={{ width: `${score}%` }} />
+                      <div
+                        className="confidence-fill"
+                        style={{ width: `${score}%` }}
+                      />
                     </div>
                     <div className="confidence-label">
-                      <span>CONFIDENCE LEVEL</span>
-                      <span>{score >= 70 ? "HIGH" : score >= 40 ? "MEDIUM" : "LOW"}</span>
+                      <span>{t("fiConfidence")}</span>
+                      <span>
+                        {score >= 70
+                          ? t("confHigh")
+                          : score >= 40
+                            ? t("confMedium")
+                            : t("confLow")}
+                      </span>
                     </div>
                   </article>
                 );
@@ -199,20 +253,17 @@ function FishIdentifier() {
             <div className="ai-warning">
               <div className="warning-icon">!</div>
               <div>
-                <strong>Identification advisory</strong>
-                <p>
-                  These predictions come from a general-purpose computer vision model.
-                  They are not a guaranteed fish-species identification. Verify the result
-                  using local knowledge, field guides and relevant fisheries information.
-                </p>
+                <strong>{t("fiAdvisoryT")}</strong>
+                <p>{t("fiAdvisoryP")}</p>
               </div>
             </div>
           </section>
         )}
 
         <div className="ai-footer">
-          <span>MAKRAN BLUE</span><div className="footer-line" />
-          <span>MARINE INTELLIGENCE SYSTEM</span>
+          <span>{t("brand")}</span>
+          <div className="footer-line" />
+          <span>{t("fiFooter")}</span>
         </div>
       </div>
     </ToolPage>

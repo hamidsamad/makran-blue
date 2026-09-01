@@ -11,7 +11,10 @@ export default function MarineLife() {
   const list = useMemo(() => {
     return fish.filter((f) => {
       const name = t(f.nameKey).toLowerCase();
-      const matchQ = !q || name.includes(q.toLowerCase()) || f.sci.toLowerCase().includes(q.toLowerCase());
+      const matchQ =
+        !q ||
+        name.includes(q.toLowerCase()) ||
+        f.sci.toLowerCase().includes(q.toLowerCase());
       const matchC = cat === "all" || f.catKey === cat;
       return matchQ && matchC;
     });

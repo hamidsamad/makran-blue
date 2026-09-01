@@ -1,478 +1,176 @@
 import React from "react";
 
 import Info from "../components/Info";
+import { useApp } from "../context/AppContext";
 
 function About() {
+  const { t } = useApp();
+
   return (
     <div className="page">
-
       {/* HERO */}
-
       <div className="page-hero">
-        <span className="eyebrow">ABOUT</span>
+        <span className="eyebrow">{t("abEyebrow")}</span>
 
-        <h1>
-          Built as a long-term coastal product.
-        </h1>
+        <h1>{t("abH1")}</h1>
 
-        <p>
-          Makran Blue is a personal project foundation designed to grow
-          into a real platform connecting people, marine knowledge,
-          coastal culture, data and practical tools across the Makran
-          coast.
-        </p>
+        <p>{t("abLead")}</p>
       </div>
-
 
       {/* PRODUCT PRINCIPLES */}
-
       <div className="two-col">
-
         <div>
-
-          <h2>Product principles</h2>
+          <h2>{t("abPrinciples")}</h2>
 
           <div className="info-grid">
-
-            <Info
-              icon="🎯"
-              title="Useful"
-              text="Build features around real user needs, especially fishermen and coastal communities."
-            />
-
-            <Info
-              icon="🛡️"
-              title="Safe"
-              text="Never manufacture official warnings or present uncertain predictions as facts."
-            />
-
-            <Info
-              icon="📡"
-              title="Connected"
-              text="Use clean service layers so live providers can be added without rebuilding the UI."
-            />
-
-            <Info
-              icon="🌱"
-              title="Responsible"
-              text="Promote sustainable fisheries and respect community knowledge."
-            />
-
+            <Info icon="🎯" title={t("abUseful")} text={t("abUsefulT")} />
+            <Info icon="🛡️" title={t("abSafe")} text={t("abSafeT")} />
+            <Info icon="📡" title={t("abConnected")} text={t("abConnectedT")} />
+            <Info icon="🌱" title={t("abResponsible")} text={t("abResponsibleT")} />
           </div>
-
         </div>
-
       </div>
-
 
       {/* OUR STORY */}
-
       <div className="two-col">
-
         <div>
+          <span className="eyebrow">{t("abStoryEyebrow")}</span>
 
-          <span className="eyebrow">
-            OUR STORY
-          </span>
+          <h2>{t("abStoryH")}</h2>
 
-          <h2>
-            Connecting people with the coast.
-          </h2>
-
-          <p>
-            The Makran coast is home to fishing communities, marine
-            ecosystems, coastal traditions and generations of knowledge.
-            Makran Blue is built around the idea of bringing these
-            different parts of coastal life together through useful
-            digital tools.
-          </p>
-
-          <p>
-            The project is designed as a foundation that can grow over
-            time. New data sources, services and community-focused
-            features can be added without changing the core experience.
-          </p>
-
+          <p>{t("abStoryP1")}</p>
+          <p>{t("abStoryP2")}</p>
         </div>
-
       </div>
-
 
       {/* COASTAL COMMUNITY */}
-
       <div className="two-col">
-
         <div>
+          <span className="eyebrow">{t("abCommunityEyebrow")}</span>
 
-          <span className="eyebrow">
-            COASTAL COMMUNITY
-          </span>
-
-          <h2>
-            Built around real coastal life.
-          </h2>
+          <h2>{t("abCommunityH")}</h2>
 
           <div className="info-grid">
-
-            <Info
-              icon="🎣"
-              title="Fishermen"
-              text="Provide practical information and tools that can support people whose daily lives and work depend on the sea."
-            />
-
-            <Info
-              icon="🚤"
-              title="Boat Operators"
-              text="Create useful coastal tools that can help people understand conditions and plan their activities responsibly."
-            />
-
-            <Info
-              icon="🤝"
-              title="Local Communities"
-              text="Respect local experience, traditions and knowledge while creating a digital space for coastal communities."
-            />
-
-            <Info
-              icon="🌍"
-              title="Coastal Visitors"
-              text="Help visitors discover the natural environment, marine life and unique culture of the Makran coast."
-            />
-
+            <Info icon="🎣" title={t("abFishermen")} text={t("abFishermenT")} />
+            <Info icon="🚤" title={t("abBoats")} text={t("abBoatsT")} />
+            <Info icon="🤝" title={t("abCommunities")} text={t("abCommunitiesT")} />
+            <Info icon="🌍" title={t("abVisitors")} text={t("abVisitorsT")} />
           </div>
-
         </div>
-
       </div>
-
 
       {/* MARINE KNOWLEDGE */}
-
       <div className="two-col">
-
         <div>
+          <span className="eyebrow">{t("abKnowledgeEyebrow")}</span>
 
-          <span className="eyebrow">
-            MARINE KNOWLEDGE
-          </span>
+          <h2>{t("abKnowledgeH")}</h2>
 
-          <h2>
-            Making marine information easier to understand.
-          </h2>
-
-          <p>
-            The sea is constantly changing. Weather, wind, waves,
-            tides and other conditions can influence people working
-            and travelling along the coast.
-          </p>
-
-          <p>
-            Makran Blue provides a foundation where different types
-            of marine and coastal information can eventually be
-            presented together in a simple and understandable way.
-          </p>
+          <p>{t("abKnowledgeP1")}</p>
+          <p>{t("abKnowledgeP2")}</p>
 
           <div className="info-grid">
-
-            <Info
-              icon="🌊"
-              title="Coastal Conditions"
-              text="Present useful information about changing coastal conditions when reliable data is available."
-            />
-
-            <Info
-              icon="💨"
-              title="Weather & Wind"
-              text="Connect suitable weather services to provide useful environmental information."
-            />
-
-            <Info
-              icon="🧭"
-              title="Navigation"
-              text="Provide practical navigation-oriented tools while making it clear that they do not replace professional navigation systems."
-            />
-
-            <Info
-              icon="🐟"
-              title="Marine Life"
-              text="Help people learn more about marine environments, species and the ecosystems connected to the coast."
-            />
-
+            <Info icon="🌊" title={t("abCondT")} text={t("abCondTx")} />
+            <Info icon="💨" title={t("abWeatherT")} text={t("abWeatherTx")} />
+            <Info icon="🧭" title={t("abNavT")} text={t("abNavTx")} />
+            <Info icon="🐟" title={t("abLifeT")} text={t("abLifeTx")} />
           </div>
-
         </div>
-
       </div>
-
 
       {/* COASTAL CULTURE */}
-
       <div className="two-col">
-
         <div>
+          <span className="eyebrow">{t("abCultureEyebrow")}</span>
 
-          <span className="eyebrow">
-            COASTAL CULTURE
-          </span>
+          <h2>{t("abCultureH")}</h2>
 
-          <h2>
-            More than data. It is a culture.
-          </h2>
-
-          <p>
-            The Makran coast has a rich connection between people,
-            the sea and local traditions. Technology should not replace
-            this knowledge. It should help preserve, organize and share it.
-          </p>
+          <p>{t("abCultureP")}</p>
 
           <div className="info-grid">
-
-            <Info
-              icon="🏝️"
-              title="Coastal Heritage"
-              text="Respect the history, traditions and identity that have developed along the Makran coast."
-            />
-
-            <Info
-              icon="🧭"
-              title="Local Knowledge"
-              text="Value the experience and observations of people who understand the coast through generations of experience."
-            />
-
-            <Info
-              icon="📖"
-              title="Shared Learning"
-              text="Create opportunities for useful coastal knowledge and experiences to be documented and shared."
-            />
-
-            <Info
-              icon="🤝"
-              title="Community Voice"
-              text="Keep coastal communities at the center of the platform and its future development."
-            />
-
+            <Info icon="🏝️" title={t("abHeritage")} text={t("abHeritageT")} />
+            <Info icon="🧭" title={t("abLocal")} text={t("abLocalT")} />
+            <Info icon="📖" title={t("abLearning")} text={t("abLearningT")} />
+            <Info icon="🤝" title={t("abVoice")} text={t("abVoiceT")} />
           </div>
-
         </div>
-
       </div>
-
 
       {/* RESPONSIBLE COAST */}
-
       <div className="two-col">
-
         <div>
+          <span className="eyebrow">{t("abRespEyebrow")}</span>
 
-          <span className="eyebrow">
-            RESPONSIBLE COAST
-          </span>
+          <h2>{t("abRespH")}</h2>
 
-          <h2>
-            Supporting a healthier marine future.
-          </h2>
-
-          <p>
-            A strong coastal platform should not only help people use
-            marine resources. It should also encourage awareness of the
-            ecosystems and communities that depend on them.
-          </p>
-
-          <p>
-            Makran Blue supports responsible fishing, respect for
-            marine ecosystems and sustainable use of coastal resources.
-          </p>
-
+          <p>{t("abRespP1")}</p>
+          <p>{t("abRespP2")}</p>
         </div>
-
       </div>
-
 
       {/* DATA & SERVICES */}
-
       <div className="two-col">
-
         <div>
+          <span className="eyebrow">{t("abDataEyebrow")}</span>
 
-          <span className="eyebrow">
-            DATA & SERVICES
-          </span>
+          <h2>{t("abDataH")}</h2>
 
-          <h2>
-            Ready to connect with reliable services.
-          </h2>
-
-          <p>
-            Makran Blue is designed with clean service layers so that
-            external data providers can be connected as the project grows.
-          </p>
+          <p>{t("abDataP")}</p>
 
           <div className="info-grid">
-
-            <Info
-              icon="🌤️"
-              title="Weather Data"
-              text="Connect reliable weather information from suitable providers when available."
-            />
-
-            <Info
-              icon="🌊"
-              title="Marine Data"
-              text="Make useful marine and coastal information accessible through trusted sources."
-            />
-
-            <Info
-              icon="🗺️"
-              title="Maps"
-              text="Use maps and location-based tools to help users explore the Makran coast."
-            />
-
-            <Info
-              icon="📊"
-              title="Coastal Data"
-              text="Organize different types of coastal information into a clear and useful experience."
-            />
-
+            <Info icon="🌤️" title={t("abWxData")} text={t("abWxDataT")} />
+            <Info icon="🌊" title={t("abMarineData")} text={t("abMarineDataT")} />
+            <Info icon="🗺️" title={t("abMaps")} text={t("abMapsT")} />
+            <Info icon="📊" title={t("abCData")} text={t("abCDataT")} />
           </div>
-
         </div>
-
       </div>
-
 
       {/* SAFETY */}
-
       <div className="two-col">
-
         <div>
+          <span className="eyebrow">{t("abTrustEyebrow")}</span>
 
-          <span className="eyebrow">
-            SAFETY & TRUST
-          </span>
+          <h2>{t("abTrustH")}</h2>
 
-          <h2>
-            Information should be clear and honest.
-          </h2>
-
-          <p>
-            Marine information can affect real decisions. Makran Blue
-            should clearly distinguish between verified information,
-            live provider data, estimates and general educational content.
-          </p>
+          <p>{t("abTrustP")}</p>
 
           <div className="info-grid">
-
-            <Info
-              icon="🚫"
-              title="No Fabricated Warnings"
-              text="Official warnings should only come from appropriate authoritative sources."
-            />
-
-            <Info
-              icon="⚠️"
-              title="Clear Uncertainty"
-              text="Predictions and estimates should never be presented as guaranteed facts."
-            />
-
-            <Info
-              icon="✅"
-              title="Reliable Sources"
-              text="Live information should be connected through suitable and trustworthy providers."
-            />
-
-            <Info
-              icon="🔎"
-              title="Transparency"
-              text="Users should be able to understand where important information comes from."
-            />
-
+            <Info icon="🚫" title={t("abNoFake")} text={t("abNoFakeT")} />
+            <Info icon="⚠️" title={t("abUncertain")} text={t("abUncertainT")} />
+            <Info icon="✅" title={t("abReliable")} text={t("abReliableT")} />
+            <Info icon="🔎" title={t("abTransparency")} text={t("abTransparencyT")} />
           </div>
-
         </div>
-
       </div>
-
 
       {/* LONG TERM VISION */}
-
       <div className="two-col">
-
         <div>
+          <span className="eyebrow">{t("abVisionEyebrow")}</span>
 
-          <span className="eyebrow">
-            LONG-TERM VISION
-          </span>
+          <h2>{t("abVisionH")}</h2>
 
-          <h2>
-            Start small. Build for the coast.
-          </h2>
-
-          <p>
-            Makran Blue does not need to become everything at once.
-            The foundation can start with a focused set of useful
-            features and gradually grow as better data, services and
-            community needs become available.
-          </p>
-
-          <p>
-            The long-term goal is to create a platform that connects
-            coastal people with information, tools, knowledge and
-            services while keeping the experience simple, responsible
-            and useful.
-          </p>
+          <p>{t("abVisionP1")}</p>
+          <p>{t("abVisionP2")}</p>
 
           <div className="info-grid">
-
-            <Info
-              icon="🌦️"
-              title="Live Weather"
-              text="Add reliable live weather information through external providers."
-            />
-
-            <Info
-              icon="🌊"
-              title="Marine Conditions"
-              text="Expand the platform with useful marine condition data."
-            />
-
-            <Info
-              icon="🧭"
-              title="Navigation Tools"
-              text="Develop practical tools that can support coastal navigation and awareness."
-            />
-
-            <Info
-              icon="📚"
-              title="Marine Education"
-              text="Create educational resources about the sea, marine life and coastal environments."
-            />
-
+            <Info icon="🌦️" title={t("abLiveWx")} text={t("abLiveWxT")} />
+            <Info icon="🌊" title={t("abMarineCond")} text={t("abMarineCondT")} />
+            <Info icon="🧭" title={t("abNavTools")} text={t("abNavToolsT")} />
+            <Info icon="📚" title={t("abEdu")} text={t("abEduT")} />
           </div>
-
         </div>
-
       </div>
-
 
       {/* FINAL */}
-
       <div className="page-hero">
+        <span className="eyebrow">{t("brand")}</span>
 
-        <span className="eyebrow">
-          MAKRAN BLUE
-        </span>
+        <h1>{t("abFinalH")}</h1>
 
-        <h1>
-          Built for the coast.
-        </h1>
-
-        <p>
-          Makran Blue is a foundation for exploring what technology can
-          do for coastal communities while respecting the sea, local
-          knowledge, marine ecosystems and the people who depend on them.
-        </p>
-
+        <p>{t("abFinalP")}</p>
       </div>
-
     </div>
   );
 }

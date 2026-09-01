@@ -6,33 +6,39 @@ import { useApp } from "../context/AppContext";
 const COASTAL_AREAS = [
   {
     name: "Gwadar",
+    nameKey: "areaGwadar",
     lat: 25.1264,
     lon: 62.3225,
   },
   {
     name: "Pasni",
+    nameKey: "areaPasni",
     lat: 25.2631,
-    lon: 63.4710,
+    lon: 63.471,
   },
   {
     name: "Ormara",
+    nameKey: "areaOrmara",
     lat: 25.2088,
     lon: 64.6357,
   },
   {
     name: "Jiwani",
+    nameKey: "areaJiwani",
     lat: 25.0482,
     lon: 61.7456,
   },
   {
     name: "Pishukan",
-    lat: 25.2500,
-    lon: 62.0000,
+    nameKey: "locPishukanName",
+    lat: 25.25,
+    lon: 62.0,
   },
   {
     name: "Sur",
-    lat: 25.4000,
-    lon: 63.3000,
+    nameKey: "locSurName",
+    lat: 25.4,
+    lon: 63.3,
   },
 ];
 
@@ -50,7 +56,7 @@ function Safety() {
     if (waveHeight >= 3.0 || windSpeed >= 55) {
       return {
         level: "danger",
-        label: "HIGH RISK",
+        labelKey: "riskHigh",
         icon: "🚨",
       };
     }
@@ -58,7 +64,7 @@ function Safety() {
     if (waveHeight >= 2.0 || windSpeed >= 40) {
       return {
         level: "warning",
-        label: "WARNING",
+        labelKey: "riskWarning",
         icon: "⚠️",
       };
     }
@@ -66,14 +72,14 @@ function Safety() {
     if (waveHeight >= 1.2 || windSpeed >= 30) {
       return {
         level: "watch",
-        label: "WATCH",
+        labelKey: "riskWatch",
         icon: "🌊",
       };
     }
 
     return {
       level: "safe",
-      label: "NORMAL",
+      labelKey: "riskNormal",
       icon: "✓",
     };
   };
@@ -99,24 +105,18 @@ function Safety() {
           }
 
           const data = await response.json();
-
           const current = data.current || {};
 
           const waveHeight = Number(current.wave_height ?? 0);
-          const windWaveHeight = Number(
-            current.wind_wave_height ?? 0
-          );
+          const windWaveHeight = Number(current.wind_wave_height ?? 0);
 
           /*
             Open-Meteo marine data does not directly provide
             an official "sea level emergency alert".
-
             Therefore this page creates a CONDITION ALERT
             from live marine measurements.
           */
-
           const windSpeed = 0;
-
           const risk = getRisk(waveHeight, windSpeed);
 
           return {
@@ -135,9 +135,7 @@ function Safety() {
       setLastUpdated(new Date());
     } catch (err) {
       console.error(err);
-      setError(
-        "Unable to connect to the live marine data service."
-      );
+      setError("sfErrorP");
     } finally {
       setLoading(false);
     }
@@ -147,25 +145,16 @@ function Safety() {
     fetchMarineData();
 
     // Refresh every 10 minutes
-    const interval = setInterval(
-      fetchMarineData,
-      10 * 60 * 1000
-    );
+    const interval = setInterval(fetchMarineData, 10 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const dangerCount = areas.filter(
-    (area) => area.level === "danger"
-  ).length;
-
-  const warningCount = areas.filter(
-    (area) => area.level === "warning"
-  ).length;
+  const dangerCount = areas.filter((area) => area.level === "danger").length;
+  const warningCount = areas.filter((area) => area.level === "warning").length;
 
   return (
     <div className="safety-page">
-
       {inFisherman && (
         <Link className="tool-back" to="/fisherman">
           ← {t("ctaFisherman")}
@@ -173,39 +162,31 @@ function Safety() {
       )}
 
       {/* HEADER */}
-
       <section className="safety-header">
         <div>
-          <span className="safety-eyebrow">
-            MAKRAN COAST • LIVE SAFETY
-          </span>
+          <span className="safety-eyebrow">{t("sfEyebrow")}</span>
 
           <h1>
-            Coastal Safety
-            <span> Monitor</span>
+            {t("sfTitleA")}
+            <span> {t("sfTitleB")}</span>
           </h1>
 
-          <p>
-            Live marine conditions for the Makran coastline.
-            Monitor wave conditions before going offshore.
-          </p>
+          <p>{t("sfLead")}</p>
         </div>
 
         <div className="live-status">
           <span className="live-dot"></span>
-          LIVE DATA
+          {t("liveData")}
         </div>
       </section>
 
       {/* SUMMARY */}
-
       <section className="safety-summary">
-
         <div className="summary-card">
           <span>📍</span>
           <div>
             <strong>{areas.length}</strong>
-            <small>Coastal Areas</small>
+            <small>{t("coastalAreas")}</small>
           </div>
         </div>
 
@@ -213,7 +194,7 @@ function Safety() {
           <span>🚨</span>
           <div>
             <strong>{dangerCount}</strong>
-            <small>High Risk</small>
+            <small>{t("sfHighRisk")}</small>
           </div>
         </div>
 
@@ -221,7 +202,7 @@ function Safety() {
           <span>⚠️</span>
           <div>
             <strong>{warningCount}</strong>
-            <small>Warnings</small>
+            <small>{t("sfWarnings")}</small>
           </div>
         </div>
 
@@ -229,107 +210,82 @@ function Safety() {
           <span>🔄</span>
           <div>
             <strong>10m</strong>
-            <small>Refresh Rate</small>
+            <small>{t("sfRefreshRate")}</small>
           </div>
         </div>
-
       </section>
 
       {/* ERROR */}
-
       {error && (
         <div className="safety-error">
           <span>⚠️</span>
           <div>
-            <strong>Live feed unavailable</strong>
-            <p>{error}</p>
+            <strong>{t("sfFeedTitle")}</strong>
+            <p>{t(error)}</p>
           </div>
 
-          <button onClick={fetchMarineData}>
-            Retry
-          </button>
+          <button onClick={fetchMarineData}>{t("retry")}</button>
         </div>
       )}
 
       {/* LOADING */}
-
       {loading && areas.length === 0 && (
         <div className="safety-loading">
           <div className="loading-spinner"></div>
 
-          <h3>Connecting to marine data...</h3>
+          <h3>{t("sfConnecting")}</h3>
 
-          <p>
-            Checking current conditions along the
-            Makran coast.
-          </p>
+          <p>{t("sfChecking")}</p>
         </div>
       )}
 
       {/* AREA ALERTS */}
-
       <section className="coastal-monitor">
-
         <div className="monitor-heading">
           <div>
-            <span>LIVE COASTAL CONDITIONS</span>
-            <h2>Makran Coast</h2>
+            <span>{t("sfLiveConditions")}</span>
+            <h2>{t("regionMakran")}</h2>
           </div>
 
-          <button
-            className="refresh-button"
-            onClick={fetchMarineData}
-          >
-            ↻ Refresh
+          <button className="refresh-button" onClick={fetchMarineData}>
+            ↻ {t("refresh")}
           </button>
         </div>
 
         <div className="coastal-grid">
-
           {areas.map((area) => (
             <article
               className={`coastal-card ${area.level}`}
               key={area.name}
             >
-
               {/* CARD TOP */}
-
               <div className="coastal-card-top">
-
                 <div>
                   <span className="location-label">
-                    COASTAL AREA
+                    {t("sfCoastalArea")}
                   </span>
 
-                  <h3>{area.name}</h3>
+                  <h3>{t(area.nameKey)}</h3>
                 </div>
 
-                <div className="risk-icon">
-                  {area.icon}
-                </div>
-
+                <div className="risk-icon">{area.icon}</div>
               </div>
 
               {/* STATUS */}
-
               <div className={`risk-status ${area.level}`}>
                 <span></span>
-                {area.label}
+                {t(area.labelKey)}
               </div>
 
               {/* CONDITIONS */}
-
               <div className="conditions">
-
                 <div className="condition">
                   <span>🌊</span>
 
                   <div>
-                    <small>Wave Height</small>
+                    <small>{t("lblWaveHeight")}</small>
 
-                    <strong>
-                      {area.waveHeight.toFixed(2)} m
-                    </strong>
+                    <strong>{area.waveHeight.toFixed(2)} m</strong>
                   </div>
                 </div>
 
@@ -337,11 +293,9 @@ function Safety() {
                   <span>💨</span>
 
                   <div>
-                    <small>Wind Wave</small>
+                    <small>{t("lblWindWave")}</small>
 
-                    <strong>
-                      {area.windWaveHeight.toFixed(2)} m
-                    </strong>
+                    <strong>{area.windWaveHeight.toFixed(2)} m</strong>
                   </div>
                 </div>
 
@@ -349,159 +303,111 @@ function Safety() {
                   <span>🧭</span>
 
                   <div>
-                    <small>Wave Direction</small>
+                    <small>{t("lblWaveDir")}</small>
 
                     <strong>
                       {area.waveDirection
-                        ? `${Math.round(
-                            area.waveDirection
-                          )}°`
+                        ? `${Math.round(area.waveDirection)}°`
                         : "N/A"}
                     </strong>
                   </div>
                 </div>
-
               </div>
 
               {/* WARNING MESSAGE */}
-
               <div className="alert-message">
-
                 {area.level === "danger" && (
                   <>
-                    <strong>⚠️ Dangerous conditions</strong>
-
-                    <p>
-                      Wave conditions are currently
-                      above the high-risk threshold.
-                      Avoid unnecessary offshore travel.
-                    </p>
+                    <strong>{t("sfDangerT")}</strong>
+                    <p>{t("sfDangerP")}</p>
                   </>
                 )}
 
                 {area.level === "warning" && (
                   <>
-                    <strong>⚠️ Rough sea conditions</strong>
-
-                    <p>
-                      Elevated wave conditions detected.
-                      Check local marine warnings before
-                      departure.
-                    </p>
+                    <strong>{t("sfWarnT")}</strong>
+                    <p>{t("sfWarnP")}</p>
                   </>
                 )}
 
                 {area.level === "watch" && (
                   <>
-                    <strong>🌊 Conditions to monitor</strong>
-
-                    <p>
-                      Marine conditions are elevated.
-                      Continue monitoring before going offshore.
-                    </p>
+                    <strong>{t("sfWatchT")}</strong>
+                    <p>{t("sfWatchP")}</p>
                   </>
                 )}
 
                 {area.level === "safe" && (
                   <>
-                    <strong>✓ Conditions currently normal</strong>
-
-                    <p>
-                      No elevated wave condition detected
-                      by the current data feed.
-                    </p>
+                    <strong>{t("sfSafeT")}</strong>
+                    <p>{t("sfSafeP")}</p>
                   </>
                 )}
-
               </div>
 
               <div className="data-time">
-                Live marine data
+                {t("sfLiveMarineData")}
                 {area.time && ` • ${area.time}`}
               </div>
-
             </article>
           ))}
-
         </div>
-
       </section>
 
       {/* THRESHOLDS */}
-
       <section className="threshold-section">
-
         <div className="threshold-header">
-          <span>SAFETY LOGIC</span>
-          <h2>How alerts are classified</h2>
+          <span>{t("sfLogicEyebrow")}</span>
+          <h2>{t("sfLogicH")}</h2>
         </div>
 
         <div className="threshold-grid">
-
           <div className="threshold normal">
             <span>✓</span>
             <div>
-              <strong>Normal</strong>
-              <p>
-                Wave height below 1.2 m.
-              </p>
+              <strong>{t("thNormal")}</strong>
+              <p>{t("thNormalP")}</p>
             </div>
           </div>
 
           <div className="threshold watch">
             <span>🌊</span>
             <div>
-              <strong>Watch</strong>
-              <p>
-                Wave height reaches 1.2 m or more.
-              </p>
+              <strong>{t("thWatch")}</strong>
+              <p>{t("thWatchP")}</p>
             </div>
           </div>
 
           <div className="threshold warning">
             <span>⚠️</span>
             <div>
-              <strong>Warning</strong>
-              <p>
-                Wave height reaches 2.0 m or more.
-              </p>
+              <strong>{t("thWarning")}</strong>
+              <p>{t("thWarningP")}</p>
             </div>
           </div>
 
           <div className="threshold danger">
             <span>🚨</span>
             <div>
-              <strong>High Risk</strong>
-              <p>
-                Wave height reaches 3.0 m or more.
-              </p>
+              <strong>{t("thHighRisk")}</strong>
+              <p>{t("thHighRiskP")}</p>
             </div>
           </div>
-
         </div>
-
       </section>
 
       {/* FOOTER NOTE */}
-
       <div className="safety-note">
-        <strong>Important:</strong>
+        <strong>{t("sfImportant")}</strong>
 
-        <span>
-          These are automated condition indicators based
-          on live marine data. They are not official
-          emergency warnings. Always follow instructions
-          from local authorities and official maritime
-          services.
-        </span>
+        <span>{t("sfNote")}</span>
 
         <div className="updated">
           {lastUpdated
-            ? `Last updated: ${lastUpdated.toLocaleTimeString()}`
-            : "Waiting for update..."}
+            ? `${t("sfUpdated")} ${lastUpdated.toLocaleTimeString()}`
+            : t("sfWaiting")}
         </div>
       </div>
-
     </div>
   );
 }

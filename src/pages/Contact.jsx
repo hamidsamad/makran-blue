@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
+import { useApp } from "../context/AppContext";
+
 function Contact() {
+  const { t } = useApp();
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -24,30 +28,24 @@ function Contact() {
   return (
     <div className="page">
       <div className="page-hero">
-        <span className="eyebrow">CONTACT</span>
+        <span className="eyebrow">{t("ctEyebrow")}</span>
 
-        <h1>Get in Touch</h1>
+        <h1>{t("ctH1")}</h1>
 
-        <p>
-          Have a question or want to learn more about Makran Blue?
-          Send us a message and we will get back to you.
-        </p>
+        <p>{t("ctLead")}</p>
       </div>
 
       <div className="contact-container">
         {/* Contact Information */}
         <div className="contact-info">
-          <h2>Contact Us</h2>
+          <h2>{t("ctUsH")}</h2>
 
-          <p>
-            We are always happy to hear from you. You can contact us
-            through the information below.
-          </p>
+          <p>{t("ctUsP")}</p>
 
           <div className="contact-item">
             <span>📧</span>
             <div>
-              <h3>Email</h3>
+              <h3>{t("lblEmail")}</h3>
               <p>info@makranblue.org</p>
             </div>
           </div>
@@ -55,15 +53,15 @@ function Contact() {
           <div className="contact-item">
             <span>📍</span>
             <div>
-              <h3>Location</h3>
-              <p>Makran, Balochistan, Pakistan</p>
+              <h3>{t("lblLocation")}</h3>
+              <p>{t("ctAddress")}</p>
             </div>
           </div>
 
           <div className="contact-item">
             <span>📞</span>
             <div>
-              <h3>Phone</h3>
+              <h3>{t("lblPhone")}</h3>
               <p>+92 300 0000000</p>
             </div>
           </div>
@@ -73,50 +71,48 @@ function Contact() {
         <div className="contact-form">
           {sent ? (
             <div className="success-message">
-              <h2>Message Sent ✓</h2>
-              <p>
-                Thank you for contacting us. We will get back to you soon.
-              </p>
+              <h2>{t("ctSentH")}</h2>
+              <p>{t("ctSentP")}</p>
 
               <button onClick={() => setSent(false)}>
-                Send Another Message
+                {t("ctAnother")}
               </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
-              <h2>Send a Message</h2>
+              <h2>{t("ctFormH")}</h2>
 
-              <label>Name</label>
+              <label>{t("lblName")}</label>
               <input
                 type="text"
                 name="name"
-                placeholder="Enter your name"
+                placeholder={t("phName")}
                 value={form.name}
                 onChange={handleChange}
                 required
               />
 
-              <label>Email</label>
+              <label>{t("lblEmail")}</label>
               <input
                 type="email"
                 name="email"
-                placeholder="Enter your email"
+                placeholder={t("phEmail")}
                 value={form.email}
                 onChange={handleChange}
                 required
               />
 
-              <label>Message</label>
+              <label>{t("lblMessage")}</label>
               <textarea
                 name="message"
-                placeholder="Write your message..."
+                placeholder={t("phMessage")}
                 rows="6"
                 value={form.message}
                 onChange={handleChange}
                 required
               ></textarea>
 
-              <button type="submit">Send Message</button>
+              <button type="submit">{t("ctSend")}</button>
             </form>
           )}
         </div>

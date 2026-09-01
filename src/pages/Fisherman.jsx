@@ -2,64 +2,62 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import Tool from "../components/Tool";
+import { useApp } from "../context/AppContext";
 
 function Fisherman() {
+  const { t } = useApp();
+
   return (
     <div className="fisher-page">
       <div className="fisher-top">
         <Link to="/" className="back">
-          ← Makran Blue
+          ← {t("brand")}
         </Link>
 
-        <span className="status-dot">
-          ● DEVELOPMENT BUILD
-        </span>
+        <span className="status-dot">● {t("devBuild")}</span>
       </div>
 
       <section className="fisher-hero">
-        <span className="eyebrow">FISHERMAN MODE</span>
+        <span className="eyebrow">{t("fisherEyebrow")}</span>
 
-        <h1>The sea, simplified.</h1>
+        <h1>{t("fisherH")}</h1>
 
-        <p>
-          Large, fast tools for navigation, conditions,
-          fishing intelligence and safety.
-        </p>
+        <p>{t("fisherP")}</p>
       </section>
 
       <div className="tool-grid">
         <Tool
           icon="🧭"
-          title="Compass"
-          text="Device heading with a clear fallback."
+          title={t("toolCompass")}
+          text={t("toolCompassT")}
           to="/fisherman/compass"
         />
 
         <Tool
           icon="🌤️"
-          title="Conditions"
-          text="Provider-ready weather and marine layer."
+          title={t("toolWeather")}
+          text={t("toolConditionsT")}
           to="/fisherman/weather"
         />
 
         <Tool
           icon="🎣"
-          title="Fishing guide"
-          text="Explain conditions; never guarantee a catch."
+          title={t("toolFishingGuide")}
+          text={t("toolFishingGuideT")}
           to="/fisherman/fishing-guide"
         />
 
         <Tool
           icon="🐟"
-          title="Fish identifier"
-          text="Possible AI-assisted species identification."
+          title={t("toolFishIdentifier")}
+          text={t("toolFishIdentifierT")}
           to="/fisherman/fish-identifier"
         />
 
         <Tool
           icon="🚨"
-          title="Emergency"
-          text="Safety information and verified resources."
+          title={t("toolEmergency")}
+          text={t("toolEmergencyT")}
           to="/fisherman/emergency"
         />
       </div>

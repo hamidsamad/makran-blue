@@ -3,393 +3,112 @@ import { Link } from "react-router-dom";
 
 import { useApp } from "../context/AppContext";
 
-
 const locations = {
   Gwadar: {
+    nameKey: "areaGwadar",
     code: "GWD",
-    region: "Western Makran",
+    regionKey: "regionWestern",
     depth: "45–120 m",
-    condition: "Good",
+    conditionKey: "condGood",
     wind: "12 km/h",
     wave: "0.8 m",
     temp: "27°C",
     bestTime: "05:30 – 09:00",
-    species: ["Tuna", "Mackerel", "Barracuda"],
-    advice:
-      "Offshore fishing is more suitable here. Experienced crews should check current marine conditions before departure.",
+    speciesKeys: ["fishTuna", "fishMackerel", "fishBarra"],
+    adviceKey: "fgAdviceGwadar",
   },
 
   Pasni: {
+    nameKey: "areaPasni",
     code: "PSN",
-    region: "Central Makran",
+    regionKey: "regionCentral",
     depth: "20–70 m",
-    condition: "Good",
+    conditionKey: "condGood",
     wind: "10 km/h",
     wave: "0.6 m",
     temp: "28°C",
     bestTime: "06:00 – 10:00",
-    species: ["Grouper", "Croaker", "Prawns"],
-    advice:
-      "Traditional coastal fishing is common around Pasni. Local knowledge is valuable when selecting fishing grounds.",
+    speciesKeys: ["fishGrouper", "fishCroaker", "fishPrawns"],
+    adviceKey: "fgAdvicePasni",
   },
 
   Ormara: {
+    nameKey: "areaOrmara",
     code: "ORM",
-    region: "Eastern Makran",
+    regionKey: "regionEastern",
     depth: "10–55 m",
-    condition: "Moderate",
+    conditionKey: "condModerate",
     wind: "16 km/h",
     wave: "1.1 m",
     temp: "27°C",
     bestTime: "05:45 – 08:30",
-    species: ["Mullet", "Bream", "Ribbonfish"],
-    advice:
-      "Bay and shore fishing can be suitable, but always check wind and wave conditions before entering the water.",
+    speciesKeys: ["fishMullet", "fishBream", "fishRibbon"],
+    adviceKey: "fgAdviceOrmara",
   },
 
   Jiwani: {
+    nameKey: "areaJiwani",
     code: "JWN",
-    region: "Western Makran",
+    regionKey: "regionWestern",
     depth: "10–60 m",
-    condition: "Good",
+    conditionKey: "condGood",
     wind: "9 km/h",
     wave: "0.5 m",
     temp: "28°C",
     bestTime: "06:15 – 09:30",
-    species: ["Snapper", "Sea Bass", "Mud Crab"],
-    advice:
-      "Sheltered coastal areas can provide useful fishing opportunities. Check local access and security information.",
+    speciesKeys: ["fishSnapper", "fishSeabass", "fishMudCrab"],
+    adviceKey: "fgAdviceJiwani",
   },
 };
 
 const species = [
-  {
-    name: "Yellowfin Tuna",
-    icon: "🐟",
-    habitat: "Deep offshore water and drop-offs.",
-    behavior: "Fast pelagic predator following baitfish.",
-    conditions: "Clear water and active currents.",
-    area: "Gwadar offshore waters.",
-  },
-  {
-    name: "King Mackerel (Surmai)",
-    icon: "🐟",
-    habitat: "Reefs, offshore structures and current lines.",
-    behavior: "Aggressive fast-moving predator.",
-    conditions: "Moving water and baitfish activity.",
-    area: "Gwadar and wider Makran coast.",
-  },
-  {
-    name: "Blackspotted Grouper",
-    icon: "🐟",
-    habitat: "Rocky reefs, caves and ledges.",
-    behavior: "Ambush predator near structure.",
-    conditions: "Low-light periods.",
-    area: "Rocky Makran coastline.",
-  },
-  {
-    name: "Red Snapper",
-    icon: "🐟",
-    habitat: "Rocky bottoms and deeper reefs.",
-    behavior: "Structure-oriented predator.",
-    conditions: "Moderate current.",
-    area: "Deeper coastal water.",
-  },
-  {
-    name: "Queenfish",
-    icon: "🐟",
-    habitat: "Beaches, bays and channels.",
-    behavior: "Fast surface predator.",
-    conditions: "Moving tidal water.",
-    area: "Jiwani and sheltered coast.",
-  },
-  {
-    name: "Barramundi",
-    icon: "🐟",
-    habitat: "Estuaries, lagoons and brackish water.",
-    behavior: "Ambush predator.",
-    conditions: "Tidal movement.",
-    area: "Sheltered coastal systems.",
-  },
-  {
-    name: "Mullet",
-    icon: "🐟",
-    habitat: "Shallow bays, beaches and lagoons.",
-    behavior: "Schooling fish.",
-    conditions: "Calm water.",
-    area: "Ormara coastal zones.",
-  },
-  {
-    name: "Croaker",
-    icon: "🐟",
-    habitat: "Sandy and muddy bottoms.",
-    behavior: "Bottom feeder.",
-    conditions: "Moderate tidal movement.",
-    area: "Pasni waters.",
-  },
-  {
-    name: "Barracuda",
-    icon: "🐟",
-    habitat: "Reefs, rocky shorelines and drop-offs.",
-    behavior: "Visual ambush predator.",
-    conditions: "Clear water and baitfish.",
-    area: "Gwadar offshore.",
-  },
-  {
-    name: "Tiger Shrimp",
-    icon: "🦐",
-    habitat: "Muddy bottoms and mangroves.",
-    behavior: "Bottom-dwelling crustacean.",
-    conditions: "Suitable tidal movement.",
-    area: "Coastal lagoons.",
-  },
-  {
-    name: "Mud Crab",
-    icon: "🦀",
-    habitat: "Mangrove channels and tidal flats.",
-    behavior: "Bottom-dwelling crab.",
-    conditions: "Active tidal periods.",
-    area: "Jiwani mangroves.",
-  },
-  {
-    name: "Ribbonfish",
-    icon: "🐟",
-    habitat: "Coastal and offshore water.",
-    behavior: "Predator of small fish.",
-    conditions: "Baitfish concentrations.",
-    area: "Ormara offshore.",
-  },
-  {
-    name: "Indian Mackerel",
-    icon: "🐟",
-    habitat: "Coastal pelagic waters.",
-    behavior: "Schooling fish.",
-    conditions: "Productive water.",
-    area: "Makran coast.",
-  },
-  {
-    name: "Indian Oil Sardine",
-    icon: "🐟",
-    habitat: "Coastal pelagic zones.",
-    behavior: "Large schooling baitfish.",
-    conditions: "Plankton-rich water.",
-    area: "Balochistan coast.",
-  },
-  {
-    name: "Indian Salmon / Rawas",
-    icon: "🐟",
-    habitat: "Coastal and estuarine areas.",
-    behavior: "Moving-water predator.",
-    conditions: "Current and baitfish.",
-    area: "Estuarine zones.",
-  },
-  {
-    name: "Trevally",
-    icon: "🐟",
-    habitat: "Reefs and rocky points.",
-    behavior: "Powerful schooling predator.",
-    conditions: "Strong current.",
-    area: "Rocky Makran coast.",
-  },
-  {
-    name: "Giant Trevally",
-    icon: "🐟",
-    habitat: "Reefs and drop-offs.",
-    behavior: "Powerful ambush predator.",
-    conditions: "Current and baitfish.",
-    area: "Offshore reefs.",
-  },
-  {
-    name: "Emperor Fish",
-    icon: "🐟",
-    habitat: "Sandy and rocky reefs.",
-    behavior: "Bottom predator.",
-    conditions: "Moderate current.",
-    area: "Rocky coastal grounds.",
-  },
-  {
-    name: "Sea Bream",
-    icon: "🐟",
-    habitat: "Rocky and sandy bottoms.",
-    behavior: "Bottom feeder.",
-    conditions: "Moderate movement.",
-    area: "Ormara bays.",
-  },
-  {
-    name: "Sea Bass",
-    icon: "🐟",
-    habitat: "Rocky coastal areas.",
-    behavior: "Opportunistic predator.",
-    conditions: "Tidal movement.",
-    area: "Jiwani bays.",
-  },
-  {
-    name: "Snapper",
-    icon: "🐟",
-    habitat: "Reefs and rocky bottoms.",
-    behavior: "Structure predator.",
-    conditions: "Reef currents.",
-    area: "Western Makran.",
-  },
-  {
-    name: "Spanish Mackerel",
-    icon: "🐟",
-    habitat: "Pelagic waters and reef edges.",
-    behavior: "Fast predator.",
-    conditions: "Clear water.",
-    area: "Offshore Makran.",
-  },
-  {
-    name: "Needlefish",
-    icon: "🐟",
-    habitat: "Shallow surface water.",
-    behavior: "Surface predator.",
-    conditions: "Calm conditions.",
-    area: "Makran coastline.",
-  },
-  {
-    name: "Garfish",
-    icon: "🐟",
-    habitat: "Shallow coastal waters.",
-    behavior: "Schooling surface feeder.",
-    conditions: "Clear water.",
-    area: "Coastal bays.",
-  },
-  {
-    name: "Flathead",
-    icon: "🐟",
-    habitat: "Sandy and muddy bottoms.",
-    behavior: "Bottom ambush predator.",
-    conditions: "Tidal movement.",
-    area: "Sheltered bays.",
-  },
-  {
-    name: "Prawns",
-    icon: "🦐",
-    habitat: "Muddy bottoms and estuaries",
-    behavior: "Bottom-dwelling crustacean.",
-    conditions: "Tidal movement.",
-    area: "Pasni lagoons.",
-  },
-  {
-    name: "Blue Swimming Crab",
-    icon: "🦀",
-    habitat: "Sandy and muddy bottoms.",
-    behavior: "Active bottom crab.",
-    conditions: "Tidal movement.",
-    area: "Sheltered waters.",
-  },
-  {
-    name: "Spiny Lobster",
-    icon: "🦞",
-    habitat: "Rocky reefs and caves.",
-    behavior: "Nocturnal bottom-dweller.",
-    conditions: "Low light.",
-    area: "Rocky Makran.",
-  },
-  {
-    name: "Octopus",
-    icon: "🐙",
-    habitat: "Rocky reefs and holes.",
-    behavior: "Adaptable predator.",
-    conditions: "Low-light periods.",
-    area: "Rocky coastline.",
-  },
-  {
-    name: "Squid",
-    icon: "🦑",
-    habitat: "Coastal and offshore water.",
-    behavior: "Active predator and forage species.",
-    conditions: "Productive water.",
-    area: "Makran waters.",
-  },
-  {
-    name: "Pomfret",
-    icon: "🐟",
-    habitat: "Sandy and muddy offshore bottoms.",
-    behavior: "Deeper-water species.",
-    conditions: "Productive offshore water.",
-    area: "Pasni and Makran.",
-  },
-  {
-    name: "Sole / Flatfish",
-    icon: "🐟",
-    habitat: "Sandy and muddy seabeds.",
-    behavior: "Bottom-dwelling fish.",
-    conditions: "Calm bottom water.",
-    area: "Sandy coastal grounds.",
-  },
-  {
-    name: "Catfish",
-    icon: "🐟",
-    habitat: "Estuaries and muddy bottoms.",
-    behavior: "Bottom feeder.",
-    conditions: "Turbid nutrient-rich water.",
-    area: "Estuarine systems.",
-  },
-  {
-    name: "Milkfish",
-    icon: "🐟",
-    habitat: "Lagoons, bays and brackish areas.",
-    behavior: "Schooling shallow-water fish.",
-    conditions: "Warm productive water.",
-    area: "Sheltered bays.",
-  },
-  {
-    name: "Cobia",
-    icon: "🐟",
-    habitat: "Reefs, wrecks and large structures.",
-    behavior: "Large opportunistic predator.",
-    conditions: "Current and baitfish.",
-    area: "Offshore Makran.",
-  },
-  {
-    name: "Wahoo",
-    icon: "🐟",
-    habitat: "Open offshore water.",
-    behavior: "Extremely fast pelagic predator.",
-    conditions: "Clear offshore water.",
-    area: "Deep offshore grounds.",
-  },
-  {
-    name: "Dorado / Mahi-Mahi",
-    icon: "🐟",
-    habitat: "Open ocean and floating structure.",
-    behavior: "Fast pelagic predator.",
-    conditions: "Warm offshore water.",
-    area: "Offshore Makran.",
-  },
-  {
-    name: "Black Pomfret",
-    icon: "🐟",
-    habitat: "Deeper coastal bottoms.",
-    behavior: "Bottom-associated fish.",
-    conditions: "Productive offshore water.",
-    area: "Pasni and Makran.",
-  },
-  {
-    name: "Silver Pomfret",
-    icon: "🐟",
-    habitat: "Sandy and muddy offshore bottoms.",
-    behavior: "Deeper coastal species.",
-    conditions: "Stable offshore conditions.",
-    area: "Makran offshore.",
-  },
-  {
-    name: "Threadfin Bream",
-    icon: "🐟",
-    habitat: "Sandy and muddy bottoms.",
-    behavior: "Bottom-feeding coastal fish.",
-    conditions: "Moderate current.",
-    area: "Central Makran.",
-  },
+  { nameKey: "fishYellowfin", icon: "🐟", hab: "yellowfinHab", beh: "yellowfinBeh", con: "yellowfinCon", are: "yellowfinAre" },
+  { nameKey: "fishKing", icon: "🐟", hab: "kingHab", beh: "kingBeh", con: "kingCon", are: "kingAre" },
+  { nameKey: "fishBlackGrouper", icon: "🐟", hab: "grouperHab", beh: "grouperBeh", con: "grouperCon", are: "grouperAre" },
+  { nameKey: "fishRedSnapper", icon: "🐟", hab: "redsnapperHab", beh: "redsnapperBeh", con: "redsnapperCon", are: "redsnapperAre" },
+  { nameKey: "fishQueen", icon: "🐟", hab: "queenfishHab", beh: "queenfishBeh", con: "queenfishCon", are: "queenfishAre" },
+  { nameKey: "fishBarramundi", icon: "🐟", hab: "barramundiHab", beh: "barramundiBeh", con: "barramundiCon", are: "barramundiAre" },
+  { nameKey: "fishMullet", icon: "🐟", hab: "mulletHab", beh: "mulletBeh", con: "mulletCon", are: "mulletAre" },
+  { nameKey: "fishCroaker", icon: "🐟", hab: "croakerHab", beh: "croakerBeh", con: "croakerCon", are: "croakerAre" },
+  { nameKey: "fishBarra", icon: "🐟", hab: "barracudaHab", beh: "barracudaBeh", con: "barracudaCon", are: "barracudaAre" },
+  { nameKey: "fishTigerShrimp", icon: "🦐", hab: "tigershrimpHab", beh: "tigershrimpBeh", con: "tigershrimpCon", are: "tigershrimpAre" },
+  { nameKey: "fishMudCrab", icon: "🦀", hab: "mudcrabHab", beh: "mudcrabBeh", con: "mudcrabCon", are: "mudcrabAre" },
+  { nameKey: "fishRibbon", icon: "🐟", hab: "ribbonfishHab", beh: "ribbonfishBeh", con: "ribbonfishCon", are: "ribbonfishAre" },
+  { nameKey: "fishIndian", icon: "🐟", hab: "indianmackerelHab", beh: "indianmackerelBeh", con: "indianmackerelCon", are: "indianmackerelAre" },
+  { nameKey: "fishSardine", icon: "🐟", hab: "sardineHab", beh: "sardineBeh", con: "sardineCon", are: "sardineAre" },
+  { nameKey: "fishSalmon", icon: "🐟", hab: "salmonHab", beh: "salmonBeh", con: "salmonCon", are: "salmonAre" },
+  { nameKey: "fishTrevally", icon: "🐟", hab: "trevallyHab", beh: "trevallyBeh", con: "trevallyCon", are: "trevallyAre" },
+  { nameKey: "fishGt", icon: "🐟", hab: "gtHab", beh: "gtBeh", con: "gtCon", are: "gtAre" },
+  { nameKey: "fishEmperor", icon: "🐟", hab: "emperorHab", beh: "emperorBeh", con: "emperorCon", are: "emperorAre" },
+  { nameKey: "fishBream", icon: "🐟", hab: "seabreamHab", beh: "seabreamBeh", con: "seabreamCon", are: "seabreamAre" },
+  { nameKey: "fishSeabass", icon: "🐟", hab: "seabassHab", beh: "seabassBeh", con: "seabassCon", are: "seabassAre" },
+  { nameKey: "fishSnapper", icon: "🐟", hab: "snapperHab", beh: "snapperBeh", con: "snapperCon", are: "snapperAre" },
+  { nameKey: "fishSpanish", icon: "🐟", hab: "spanishHab", beh: "spanishBeh", con: "spanishCon", are: "spanishAre" },
+  { nameKey: "fishNeedle", icon: "🐟", hab: "needlefishHab", beh: "needlefishBeh", con: "needlefishCon", are: "needlefishAre" },
+  { nameKey: "fishGar", icon: "🐟", hab: "garfishHab", beh: "garfishBeh", con: "garfishCon", are: "garfishAre" },
+  { nameKey: "fishFlathead", icon: "🐟", hab: "flatheadHab", beh: "flatheadBeh", con: "flatheadCon", are: "flatheadAre" },
+  { nameKey: "fishPrawns", icon: "🦐", hab: "prawnsHab", beh: "prawnsBeh", con: "prawnsCon", are: "prawnsAre" },
+  { nameKey: "fishBlueCrab", icon: "🦀", hab: "bluecrabHab", beh: "bluecrabBeh", con: "bluecrabCon", are: "bluecrabAre" },
+  { nameKey: "fishLobster", icon: "🦞", hab: "lobsterHab", beh: "lobsterBeh", con: "lobsterCon", are: "lobsterAre" },
+  { nameKey: "fishOctopus", icon: "🐙", hab: "octopusHab", beh: "octopusBeh", con: "octopusCon", are: "octopusAre" },
+  { nameKey: "fishSquid", icon: "🦑", hab: "squidHab", beh: "squidBeh", con: "squidCon", are: "squidAre" },
+  { nameKey: "fishPomfret", icon: "🐟", hab: "pomfretHab", beh: "pomfretBeh", con: "pomfretCon", are: "pomfretAre" },
+  { nameKey: "fishSole", icon: "🐟", hab: "soleHab", beh: "soleBeh", con: "soleCon", are: "soleAre" },
+  { nameKey: "fishCatfish", icon: "🐟", hab: "catfishHab", beh: "catfishBeh", con: "catfishCon", are: "catfishAre" },
+  { nameKey: "fishMilk", icon: "🐟", hab: "milkfishHab", beh: "milkfishBeh", con: "milkfishCon", are: "milkfishAre" },
+  { nameKey: "fishCobia", icon: "🐟", hab: "cobiaHab", beh: "cobiaBeh", con: "cobiaCon", are: "cobiaAre" },
+  { nameKey: "fishWahoo", icon: "🐟", hab: "wahooHab", beh: "wahooBeh", con: "wahooCon", are: "wahooAre" },
+  { nameKey: "fishDorado", icon: "🐟", hab: "doradoHab", beh: "doradoBeh", con: "doradoCon", are: "doradoAre" },
+  { nameKey: "fishBlackPomfret", icon: "🐟", hab: "blackpomfretHab", beh: "blackpomfretBeh", con: "blackpomfretCon", are: "blackpomfretAre" },
+  { nameKey: "fishSilverPomfret", icon: "🐟", hab: "silverpomfretHab", beh: "silverpomfretBeh", con: "silverpomfretCon", are: "silverpomfretAre" },
+  { nameKey: "fishThreadfin", icon: "🐟", hab: "threadfinHab", beh: "threadfinBeh", con: "threadfinCon", are: "threadfinAre" },
 ];
 
 const tabs = [
-  { id: "overview", label: "Overview" },
-  { id: "seasons", label: "Monsoon Seasons" },
-  { id: "species", label: "Species Profile" },
-  { id: "dynamics", label: "Water Dynamics" },
+  { id: "overview", labelKey: "tabOverview" },
+  { id: "seasons", labelKey: "tabSeasons" },
+  { id: "species", labelKey: "speciesProfile" },
+  { id: "dynamics", labelKey: "tabDynamics" },
 ];
 
 export default function FishingGuide() {
@@ -401,47 +120,40 @@ export default function FishingGuide() {
 
   return (
     <main className="fishing-dashboard">
-
       <Link className="tool-back" to="/fisherman">
         ← {t("ctaFisherman")}
       </Link>
 
       <section className="fishing-command">
         <div className="command-text">
-          <span className="overline">
-            COASTAL OPERATIONS / 01
-          </span>
+          <span className="overline">{t("fgEyebrow")}</span>
 
           <h1>
-            Know the water.
+            {t("fgH1a")}
             <br />
-            <i>Plan the trip.</i>
+            <i>{t("fgH1b")}</i>
           </h1>
 
-          <p>
-            A practical fishing intelligence interface for
-            fishermen exploring the Makran coastline.
-          </p>
+          <p>{t("fgLead")}</p>
 
           <div className="hero-meta">
-            <span>MAKRAN COAST</span>
-            <span>BALOCHISTAN, PK</span>
+            <span>{t("regionMakran")}</span>
+            <span>{t("fgTag2")}</span>
           </div>
         </div>
-
       </section>
 
       <section className="location-panel">
         <div className="panel-heading">
           <div>
-            <span>SELECT AREA</span>
-            <h2>Fishing sectors</h2>
+            <span>{t("fgSelectArea")}</span>
+            <h2>{t("fgSectors")}</h2>
           </div>
 
           <div className="coordinates">
-            MAKRAN COAST
+            {t("regionMakran")}
             <br />
-            BALOCHISTAN, PK
+            {t("fgTag2")}
           </div>
         </div>
 
@@ -450,14 +162,12 @@ export default function FishingGuide() {
             <button
               key={name}
               type="button"
-              className={
-                active === name ? "sector active" : "sector"
-              }
+              className={active === name ? "sector active" : "sector"}
               onClick={() => setActive(name)}
             >
               <small>{location.code}</small>
-              <strong>{name}</strong>
-              <span>{location.region}</span>
+              <strong>{t(location.nameKey)}</strong>
+              <span>{t(location.regionKey)}</span>
             </button>
           ))}
         </div>
@@ -471,7 +181,7 @@ export default function FishingGuide() {
             className={tab === item.id ? "guide-tab active" : "guide-tab"}
             onClick={() => setTab(item.id)}
           >
-            {item.label}
+            {t(item.labelKey)}
           </button>
         ))}
       </section>
@@ -479,82 +189,51 @@ export default function FishingGuide() {
       {tab === "overview" && (
         <>
           <section className="marine-grid">
-
             <div className="conditions-panel">
               <div className="panel-title">
                 <div>
-                  <span>MARINE CONDITIONS</span>
-                  <h2>Current water profile</h2>
+                  <span>{t("fgCondEyebrow")}</span>
+                  <h2>{t("fgWaterProfile")}</h2>
                 </div>
 
                 <div className="condition-good">
-                  ● {data.condition}
+                  ● {t(data.conditionKey)}
                 </div>
               </div>
 
               <div className="measurement-grid">
-                <Measurement
-                  icon="〰"
-                  label="WAVE"
-                  value={data.wave}
-                />
-
-                <Measurement
-                  icon="◉"
-                  label="WIND"
-                  value={data.wind}
-                />
-
-                <Measurement
-                  icon="°"
-                  label="SEA TEMP"
-                  value={data.temp}
-                />
-
-                <Measurement
-                  icon="↓"
-                  label="DEPTH"
-                  value={data.depth}
-                />
+                <Measurement icon="〰" label={t("mWave")} value={data.wave} />
+                <Measurement icon="◉" label={t("mWind")} value={data.wind} />
+                <Measurement icon="°" label={t("mSeaTemp")} value={data.temp} />
+                <Measurement icon="↓" label={t("mDepth")} value={data.depth} />
               </div>
 
               <div className="wave-visual">
                 <div className="wave-line" />
                 <div className="wave-line second" />
                 <div className="wave-line third" />
-                <span>WAVE MOVEMENT</span>
+                <span>{t("fgWaveMove")}</span>
               </div>
             </div>
 
             <div className="species-panel">
               <div className="panel-title">
                 <div>
-                  <span>TARGET SPECIES</span>
-                  <h2>What to look for</h2>
+                  <span>{t("fgTargetEyebrow")}</span>
+                  <h2>{t("fgLookFor")}</h2>
                 </div>
 
                 <div className="fish-symbol">🐟</div>
               </div>
 
-              {/* <div className="species-radar">
-                <div className="radar-ring ring-one" />
-                <div className="radar-ring ring-two" />
-                <div className="radar-ring ring-three" />
-                <div className="radar-scan" />
-
-                <div className="fish-dot one">🐟</div>
-                <div className="fish-dot two">🐟</div>
-                <div className="fish-dot three">🐟</div>
-              </div>  */}
-
               <div className="species-names">
-                {data.species.map((fish, index) => (
-                  <div key={fish}>
+                {data.speciesKeys.map((fishKey, index) => (
+                  <div key={fishKey}>
                     <span>
                       {String(index + 1).padStart(2, "0")}
                     </span>
 
-                    <strong>{fish}</strong>
+                    <strong>{t(fishKey)}</strong>
                   </div>
                 ))}
               </div>
@@ -565,17 +244,13 @@ export default function FishingGuide() {
             <div className="strategy-number">02</div>
 
             <div className="strategy-content">
-              <span>FISHING WINDOW</span>
+              <span>{t("fgWindow")}</span>
 
-              <h2>Recommended departure</h2>
+              <h2>{t("fgDeparture")}</h2>
 
               <strong>{data.bestTime}</strong>
 
-              <p>
-                This is a planning reference only. Actual fishing
-                conditions can change with weather, tides, wind and
-                local marine conditions.
-              </p>
+              <p>{t("fgPlanningNote")}</p>
             </div>
 
             <div className="strategy-visual">
@@ -597,11 +272,13 @@ export default function FishingGuide() {
             <div className="intel-icon">!</div>
 
             <div>
-              <span>LOCAL INTELLIGENCE</span>
+              <span>{t("fgIntel")}</span>
 
-              <h3>{active} — fishing strategy</h3>
+              <h3>
+                {t("fgStrategy", { area: t(data.nameKey) })}
+              </h3>
 
-              <p>{data.advice}</p>
+              <p>{t(data.adviceKey)}</p>
             </div>
           </section>
         </>
@@ -609,52 +286,40 @@ export default function FishingGuide() {
 
       {tab === "seasons" && (
         <section className="information-section">
-          <span className="section-label">SEASONAL INTELLIGENCE</span>
+          <span className="section-label">{t("fgSeasonEyebrow")}</span>
 
-          <h2>Seasonal Monsoon Shifts</h2>
+          <h2>{t("fgSeasonH")}</h2>
 
           <div className="information-list">
             <article>
               <span>01</span>
               <div>
-                <h3>SW Monsoon — June to August</h3>
-                <p>
-                  Stronger winds and rougher sea conditions can
-                  make offshore trips more challenging.
-                </p>
+                <h3>{t("fgSeason1T")}</h3>
+                <p>{t("fgSeason1P")}</p>
               </div>
             </article>
 
             <article>
               <span>02</span>
               <div>
-                <h3>Post-Monsoon — September to November</h3>
-                <p>
-                  Sea conditions can become more settled, although
-                  weather and currents remain variable.
-                </p>
+                <h3>{t("fgSeason2T")}</h3>
+                <p>{t("fgSeason2P")}</p>
               </div>
             </article>
 
             <article>
               <span>03</span>
               <div>
-                <h3>Winter Period</h3>
-                <p>
-                  Cooler conditions and changing wind patterns can
-                  produce different coastal fishing opportunities.
-                </p>
+                <h3>{t("fgSeason3T")}</h3>
+                <p>{t("fgSeason3P")}</p>
               </div>
             </article>
 
             <article>
               <span>04</span>
               <div>
-                <h3>Spring Transition</h3>
-                <p>
-                  Seasonal changes in temperature, currents and
-                  baitfish distribution can influence predator activity.
-                </p>
+                <h3>{t("fgSeason4T")}</h3>
+                <p>{t("fgSeason4P")}</p>
               </div>
             </article>
           </div>
@@ -663,43 +328,43 @@ export default function FishingGuide() {
 
       {tab === "species" && (
         <section className="information-section">
-          <span className="section-label">MARINE DATABASE</span>
+          <span className="section-label">{t("fgDbEyebrow")}</span>
 
-          <h2>Detailed Target Species</h2>
+          <h2>{t("fgDetailedH")}</h2>
 
           <div className="species-count">
-            🎣 {species.length} Species & Marine Targets
+            🎣 {t("fgSpeciesCount", { count: species.length })}
           </div>
 
           <div className="detailed-species-grid">
             {species.map((fish, index) => (
-              <article className="detailed-species-card" key={fish.name}>
+              <article className="detailed-species-card" key={fish.nameKey}>
                 <div className="species-card-number">
                   {String(index + 1).padStart(2, "0")}
                 </div>
 
                 <h3>
-                  {fish.icon} {fish.name}
+                  {fish.icon} {t(fish.nameKey)}
                 </h3>
 
                 <p>
-                  <strong>Habitat</strong>
-                  {fish.habitat}
+                  <strong>{t("habitat")}</strong>
+                  {t(fish.hab)}
                 </p>
 
                 <p>
-                  <strong>Behavior</strong>
-                  {fish.behavior}
+                  <strong>{t("lblBehavior")}</strong>
+                  {t(fish.beh)}
                 </p>
 
                 <p>
-                  <strong>Conditions</strong>
-                  {fish.conditions}
+                  <strong>{t("conditions")}</strong>
+                  {t(fish.con)}
                 </p>
 
                 <p>
-                  <strong>Area</strong>
-                  {fish.area}
+                  <strong>{t("lblArea")}</strong>
+                  {t(fish.are)}
                 </p>
               </article>
             ))}
@@ -709,50 +374,46 @@ export default function FishingGuide() {
 
       {tab === "dynamics" && (
         <section className="information-section">
-          <span className="section-label">OCEANOGRAPHIC DATA</span>
+          <span className="section-label">{t("fgDynEyebrow")}</span>
 
-          <h2>Water Mechanics</h2>
+          <h2>{t("fgDynH")}</h2>
 
           <div className="dynamics-grid">
             <DynamicCard
               icon="🌊"
-              title="Deep Drop-offs"
-              text="Rapid changes in depth can influence temperature, current and fish distribution."
+              title={t("fgDyn1T")}
+              text={t("fgDyn1P")}
             />
 
             <DynamicCard
               icon="💧"
-              title="Turbidity Shifts"
-              text="Waves and sediment can change water clarity and influence predator and baitfish behavior."
+              title={t("fgDyn2T")}
+              text={t("fgDyn2P")}
             />
 
             <DynamicCard
               icon="🌙"
-              title="Tidal Cycles"
-              text="Incoming and outgoing tides move nutrients and baitfish through bays and coastal channels."
+              title={t("fgDyn3T")}
+              text={t("fgDyn3P")}
             />
 
             <DynamicCard
               icon="🌡️"
-              title="Water Temperature"
-              text="Seasonal temperature changes can influence the distribution and feeding activity of marine species."
+              title={t("fgDyn4T")}
+              text={t("fgDyn4P")}
             />
 
             <DynamicCard
               icon="💨"
-              title="Wind & Waves"
-              text="Wind direction and wave height can rapidly change boating conditions. Check current marine forecasts before departure."
+              title={t("fgDyn5T")}
+              text={t("fgDyn5P")}
             />
           </div>
         </section>
       )}
 
       <footer className="guide-footer">
-        <strong>⚠️ Safety:</strong> This is an educational reference,
-        not a live marine forecast. Verify current weather, marine
-        warnings, navigation information, local access, fishing
-        regulations and protected-area restrictions before travelling
-        or fishing.
+        <strong>⚠️ {t("fgSafetyT")}</strong> {t("fgSafetyP")}
       </footer>
     </main>
   );

@@ -1,50 +1,62 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 import { useApp } from "../context/AppContext";
 
-function Layout({ children }) {
-  const [menu, setMenu] = useState(false);
-  const { t, lang, setLang, theme, toggleTheme } = useApp();
+const primary = [
+  { to: "/", key: "navHome" },
+  { to: "/explore", key: "navExplore" },
+  { to: "/areas", key: "navAreas" },
+  { to: "/marine-life", key: "navMarine" },
+  { to: "/history", key: "navHistory" },
+  { to: "/people", key: "navPeople" },
+  { to: "/culture", key: "navCulture" },
+  { to: "/astola", key: "navAstola" },
+];
 
-  const closeMenu = () => setMenu(false);
+const coast = [
+  { to: "/destinations", key: "navDest", icon: "🧭" },
+  { to: "/beaches", key: "navBeaches", icon: "🏖️" },
+  { to: "/picnic", key: "navPicnic", icon: "🧺" },
+  { to: "/hills", key: "navHills", icon: "⛰️" },
+  { to: "/hotels", key: "navHotels", icon: "🏨" },
+  { to: "/stays", key: "navStays", icon: "🛏️" },
+];
 
-  const links = [
-    ["/", t("navHome"), true],
-    ["/explore", t("navExplore")],
-    ["/areas", t("navAreas")],
-    ["/marine-life", t("navMarine")],
-    ["/culture", t("navCulture")],
-    ["/safety", "Safety"],
-    ["/ai", "AI Guide"],
-    ["/about", "About"],
-    ["/contact", "Contact"],
-  ];
+const services = [
+  { to: "/fisherman", key: "ctaFisherman", icon: "🎣" },
+  { to: "/safety", key: "navSafety", icon: "🚨" },
+  { to: "/ai", key: "navAI", icon: "🤖" },
+  { to: "/about", key: "about", icon: "ℹ️" },
+  { to: "/contact", key: "navContact", icon: "📧" },
+];
 
-  const langButtons = [
-    ["en", "EN"],
-    ["ur", "اردو"],
-    ["bal", "بلوچی"],
-  ];
+export default function Layout({ children }) {
+  const { t, theme, toggleTheme, lang, setLang } = useApp();
+  const [open, setOpen] = useState(false);
+  const [megaOn, setMegaOn] = useState(false);
+
+  const close = () => {
+    setOpen(false);
+    setMegaOn(false);
+  };
 
   return (
     <div className="app-shell">
-      {/* ANIMATED OCEAN BACKGROUND */}
-      <div className="ocean-bg" aria-hidden="true">
-        <div className="caustic"></div>
-        <div className="wave-layer w-a"></div>
-        <div className="wave-layer w-b"></div>
-        <div className="wave-layer w-c"></div>
+      <div className="ocean-bg" aria-hidden>
+        <div className="caustic" />
+        <div className="wave-layer w-a" />
+        <div className="wave-layer w-b" />
+        <div className="wave-layer w-c" />
         <div className="bubbles">
           {Array.from({ length: 14 }).map((_, i) => (
-            <span key={i} style={{ "--i": i }}></span>
+            <span key={i} style={{ "--i": i }} />
           ))}
         </div>
       </div>
 
-      {/* ================= HEADER ================= */}
       <header className="site-header">
-        <Link className="brand" to="/" onClick={closeMenu}>
+        <Link className="brand" to="/" onClick={close}>
           <span className="brand-mark">MB</span>
           <span>
             <strong>MAKRAN</strong>
@@ -53,65 +65,91 @@ function Layout({ children }) {
         </Link>
 
         <button
-          className="menu-btn"
-          onClick={() => setMenu(!menu)}
-          aria-label="Toggle navigation"
+          type="button"
+          className="nav-burger"
+          aria-label="Menu"
+          onClick={() => setOpen((v) => !v)}
         >
-          {menu ? "✕" : "☰"}
+          {open ? "✕" : "☰"}
         </button>
 
-        <nav className={menu ? "main-nav open" : "main-nav"}>
-          {links.map(([to, label, end]) => (
-            <NavLink key={to} to={to} end={end} onClick={closeMenu}>
-              {label}
+        <nav className={"main-nav " + (open ? "open" : "")}>
+          {primary.map((n) => (
+            <NavLink
+              key={n.to}
+              to={n.to}
+              end={n.to === "/"}
+              className={({ isActive }) => (isActive ? "active" : "")}
+              onClick={close}
+            >
+              {t(n.key)}
             </NavLink>
           ))}
 
-          <Link
-            className="nav-cta"
-            to="/fisherman"
-            onClick={closeMenu}
-          >
+          <div className={"mega-wrap " + (megaOn ? "on" : "")}>
+            <button
+              type="button"
+              className="mega-btn"
+              onClick={() => setMegaOn((v) => !v)}
+            >
+              {t("navCoast")} ▾
+            </button>
+
+            <div className="mega">
+              <div className="mega-col">
+                <h5>{t("navCoast")}</h5>
+                {coast.map((m) => (
+                  <Link key={m.to} to={m.to} onClick={close}>
+                    <i>{m.icon}</i> {t(m.key)}
+                  </Link>
+                ))}
+              </div>
+
+              <div className="mega-col">
+                <h5>{t("footerServices")}</h5>
+                {services.map((m) => (
+                  <Link key={m.to} to={m.to} onClick={close}>
+                    <i>{m.icon}</i> {t(m.key)}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <Link className="nav-cta" to="/fisherman" onClick={close}>
             🎣 {t("ctaFisherman")}
           </Link>
         </nav>
 
         <div className="header-tools">
-          {/* LANGUAGE CHANGER */}
           <div className="lang-switch">
-            {langButtons.map(([code, label]) => (
+            {[
+              { id: "en", label: "EN" },
+              { id: "ur", label: "اردو" },
+              { id: "bal", label: "بلوچی" },
+            ].map((l) => (
               <button
-                key={code}
-                className={lang === code ? "on" : ""}
-                onClick={() => setLang(code)}
+                key={l.id}
+                type="button"
+                className={lang === l.id ? "on" : ""}
+                onClick={() => setLang(l.id)}
               >
-                {label}
+                {l.label}
               </button>
             ))}
           </div>
 
-          {/* THEME CHANGER */}
-          <button
-            className="theme-toggle"
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-          >
+          <button type="button" className="theme-toggle" onClick={toggleTheme}>
             <span className="theme-icon">
               {theme === "dark" ? "🌙" : "☀️"}
             </span>
-            <span>
-              {theme === "dark"
-                ? t("themeDark")
-                : t("themeLight")}
-            </span>
+            <span>{theme === "dark" ? t("themeDark") : t("themeLight")}</span>
           </button>
         </div>
       </header>
 
-      {/* ================= PAGE CONTENT ================= */}
       <main className="site-main">{children}</main>
 
-      {/* ================= FOOTER ================= */}
       <footer className="site-footer footer-rich">
         <div className="footer-brand-col">
           <div className="brand">
@@ -134,23 +172,29 @@ function Layout({ children }) {
           </div>
 
           <div className="footer-col">
-            <h4>Tools</h4>
-            <Link to="/fisherman">🎣 {t("ctaFisherman")}</Link>
-            <Link to="/fisherman/compass">🧭 Compass</Link>
-            <Link to="/fisherman/weather">🌤️ Weather</Link>
-            <Link to="/fisherman/fishing-guide">
-              🎣 Fishing Guide
-            </Link>
+            <h4>{t("navCoast")}</h4>
+            <Link to="/destinations">{t("navDest")}</Link>
+            <Link to="/beaches">{t("navBeaches")}</Link>
+            <Link to="/picnic">{t("navPicnic")}</Link>
+            <Link to="/hills">{t("navHills")}</Link>
+            <Link to="/hotels">{t("navHotels")}</Link>
+            <Link to="/stays">{t("navStays")}</Link>
           </div>
 
           <div className="footer-col">
-            <h4>Services</h4>
-            <Link to="/ai">🤖 AI Guide</Link>
-            <Link to="/safety">🚨 Safety</Link>
-            <Link to="/fisherman/fish-identifier">
-              🐟 Fish Identifier
-            </Link>
-            <Link to="/contact">Contact</Link>
+            <h4>{t("discover")}</h4>
+            <Link to="/history">{t("navHistory")}</Link>
+            <Link to="/people">{t("navPeople")}</Link>
+            <Link to="/astola">{t("navAstola")}</Link>
+          </div>
+
+          <div className="footer-col">
+            <h4>{t("footerServices")}</h4>
+            <Link to="/fisherman">🎣 {t("ctaFisherman")}</Link>
+            <Link to="/safety">🚨 {t("navSafety")}</Link>
+            <Link to="/ai">🤖 {t("navAI")}</Link>
+            <Link to="/about">{t("about")}</Link>
+            <Link to="/contact">{t("navContact")}</Link>
           </div>
         </div>
 
@@ -158,12 +202,10 @@ function Layout({ children }) {
           © {new Date().getFullYear()} Makran Blue
           {" • "}
           <br /> <br />
-          Founded By <br />
+          {t("footerFounded")} <br />
           Ahmad Nadeem & Hamid Samad
         </div>
       </footer>
     </div>
   );
 }
-
-export default Layout;

@@ -6,10 +6,7 @@ function AreaCard({ area }) {
   const { t } = useApp();
 
   return (
-    <Link
-      className="area-card tilt"
-      to={`/areas/${area.slug}`}
-    >
+    <Link className="area-card tilt" to={`/areas/${area.slug}`}>
       <div className="area-art">
         <img
           src={area.image}

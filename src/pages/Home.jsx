@@ -40,8 +40,6 @@ export default function Home() {
           <div className="mountains m1" />
           <div className="mountains m2" />
           <div className="wave w1" />
-          {/* <div className="wave w2" />
-          <div className="wave w3" /> */}
         </div>
       </section>
 
