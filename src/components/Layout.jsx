@@ -68,12 +68,14 @@ export default function Layout({ children }) {
           type="button"
           className="nav-burger"
           aria-label="Menu"
+          aria-expanded={open}
+          aria-controls="primary-nav"
           onClick={() => setOpen((v) => !v)}
         >
           {open ? "✕" : "☰"}
         </button>
 
-        <nav className={"main-nav " + (open ? "open" : "")}>
+        <nav id="primary-nav" className={"main-nav " + (open ? "open" : "")}>
           {primary.map((n) => (
             <NavLink
               key={n.to}

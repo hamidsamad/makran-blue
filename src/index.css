@@ -843,8 +843,92 @@ p {
   .hero-ocean {
     height: 280px;
   }
+  .site-header {
+    position: sticky;
+    flex-wrap: nowrap;
+    row-gap: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: auto;
+    min-height: 64px;
+  }
+  .brand {
+    margin-inline-end: auto;
+    min-width: 0;
+    flex-shrink: 1;
+  }
+  .brand strong {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+  .brand small {
+    letter-spacing: 0.28em;
+    font-size: 0.5rem;
+  }
+  .header-tools {
+    order: 2;
+    margin-inline-start: 8px;
+    flex-shrink: 0;
+  }
+  .lang-switch {
+    padding: 2px;
+  }
+  .lang-switch button {
+    padding: 5px 7px;
+    font-size: 0.7rem;
+  }
+  .theme-toggle {
+    padding: 7px 9px;
+  }
+  .nav-burger {
+    order: 3;
+    margin-inline-start: 0;
+    flex-shrink: 0;
+  }
   .main-nav {
+    order: 4;
     display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin: 0;
+    padding: 12px;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(18px);
+  }
+  .main-nav.open {
+    display: flex;
+    animation: navDrop 0.2s var(--ease);
+  }
+  .main-nav a,
+  .nav-cta,
+  .mega-btn {
+    width: 100%;
+    text-align: left;
+  }
+  .mega-wrap {
+    width: 100%;
+  }
+  .mega {
+    position: static;
+    display: none;
+    grid-template-columns: 1fr;
+    min-width: 0;
+    padding: 10px 8px 6px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+  .mega-wrap.on .mega {
+    display: grid;
+  }
+  .header-tools {
+    margin-inline-start: auto;
   }
   .theme-toggle span {
     display: none;

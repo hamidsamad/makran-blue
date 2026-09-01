@@ -1,9 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import { useApp } from "../context/AppContext";
 
-function CultureCard({ icon, title, text, to }) {
+const whatsappLink =
+  "https://wa.me/923336661465?text=Hello%20Makran%20Blue%2C%20I%20want%20to%20share%20a%20story%20about%20our%20coast.";
+
+function CultureCard({ icon, title, text, href }) {
   const { t } = useApp();
 
   return (
@@ -12,9 +14,9 @@ function CultureCard({ icon, title, text, to }) {
       <h3>{title}</h3>
       <p>{text}</p>
 
-      <Link to={to || "/culture/people"}>
+      <a href={href || whatsappLink} target="_blank" rel="noreferrer">
         {t("contributeStory")} →
-      </Link>
+      </a>
     </article>
   );
 }

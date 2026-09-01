@@ -107,13 +107,16 @@ const en = {
   cultureP:
     "Makran Blue preserves coastal stories with respect, attribution and community participation.",
   tradTitle: "Fishing traditions",
-  tradT: "Traditional boats, knowledge and the working relationship with the sea.",
+  tradT:
+    "From wooden dhows to the day-boat crew, Makran's fishing knowledge is built on weather reading, tide timing and a lifetime of sea memory.",
   foodTitle: "Coastal food",
-  foodT: "Seafood, local recipes and the people who carry food traditions forward.",
+  foodT:
+    "Fresh fish, rice, tea and family meals carry the harbour's recipes forward — each dish tells a story of shore, season and community.",
   musicTitle: "Music & stories",
   musicT: "Community stories, oral histories and local creative work.",
   landTitle: "Land & landscape",
-  landT: "Mountains, coastlines, roads and settlements that shape Makran identity.",
+  landT:
+    "Mountains, coastlines, roads and settlements shape how Makran people move, remember and belong to their land.",
   mapTitle: "Makran coastal map",
   mapH: "Explore the Makran coastline",
   legendArea: "Coastal areas",
@@ -206,6 +209,9 @@ const en = {
   navStays: "Guesthouses & Camps",
   open: "Open",
   contributeStory: "Contribute a story",
+  contributeTitle: "Contribute to Makran Blue",
+  contributeLead:
+    "Share a family story, a recipe, a song, a fishing memory, or a local tradition with our community archive.",
   discover: "Discover",
   mapGpsNA: "GPS is not available in this browser.",
   mapLocFail: "Could not get your location.",

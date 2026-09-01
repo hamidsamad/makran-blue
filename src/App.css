@@ -3922,6 +3922,19 @@ html[dir="rtl"] .person-quote {
 }
 
 @media (max-width: 860px) {
+  .people-page .search-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .people-page .chip-btn {
+    width: 100%;
+    padding: 10px 8px;
+    font-size: 0.75rem;
+    text-align: center;
+  }
+
   .people-grid {
     grid-template-columns: 1fr;
   }
